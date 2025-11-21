@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>login page</title>
+  <link rel="shortcut icon" href="/media/favicon.png" type="image/x-icon">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="stylesheets/style.css">
+  <style>
+    /* Additional custom styling */
+    .wrapper {
+      font-family: 'Arial', sans-serif;
+      background-color: #FFFFF0;
+    }
+    .btn-submit {
+      background-color: #4F46E5;
+      color: white;
+      transition: background-color 0.3s ease;
+    }
+    .btn-submit:hover {
+      background-color: #3B32B1;
+    }
+    .animated-cart {
+      width: 40px;
+      height: 40px;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+  </style>
+</head>
+<body class="bg-[#FFFFF0] relative">
+  <h1 class=" logo flex absolute px-4 py-6 text-5xl font-sans">
+    <span>R</span>
+    <span>ê</span>
+    <span>v</span>
+    <span>e</span> 
+    <span>&nbsp;</span>
+    <span>d’</span>
+    <span class="text-yellow-400">O</span>
+   <span>r</span>
+</h1> 
+<div class="wrapper bg-[#FFFFF0] min-h-screen flex items-center justify-center p-4 ">
+  <div class="w-full max-w-md mx-auto bg-pink-300 p-8 rounded-lg shadow-lg mt-6">
+    <div class="text-center mb-6 ">
+      <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+
+      <dotlottie-player class=" cart max-lg:scale-50 animated-cart mx-auto mb-4" src="https://lottie.host/9e339971-8d89-443f-86b5-01c2d4b54897/rB5kN0ac9C.json" background="transparent" speed="1" style="width: 100px; height: 100px;" loop autoplay></dotlottie-player>
+      <h2 class="text-3xl font-bold text-gray-800">Welcome Back!</h2>
+      <p class="text-gray-600 mt-2">Log in to your account and start buying amazing products today!</p>
+    </div>
+    <form action="/login" method="POST">
+      <div class="mb-6">
+        <label for="email" class="block text-gray-700 text-sm font-semibold mb-2">Email</label>
+        <input type="text" id="email" name="email" required class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+      </div>
+      <div class="mb-6">
+        <label for="password" class="block text-gray-700 text-sm font-semibold mb-2">Password</label>
+        <input type="password" id="password" name="password" required class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 mb-3 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+      </div>
+      <% if (loginError && loginError.length > 0) { %>
+        <p class="text-center text-red-500"><%= loginError[0] %></p>
+      <% } %>
+      <div class="flex items-center justify-between">
+        <button type="submit" class="w-full btn-submit font-bold py-3 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Log in</button>
+      </div>
+    </form>
+  </div>
+</div>
+  
+</body>
+</html>

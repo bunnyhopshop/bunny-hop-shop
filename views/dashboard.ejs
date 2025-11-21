@@ -1,0 +1,93 @@
+<%- include('./partials/Header.ejs', {hidden: true}) %>
+<% if(error && error.length > 0) { %>
+    <div class="flash fixed inset-0 flex z-50 justify-center items-center ">
+      <p class="text-red-600 rounded py-1 px-4 h-fit w-fit bg-gray-200 text-lg md:text-2xl lg:text-2xl"><%= error[0] %></p>
+    </div>
+  <% } %>   
+<body class="bg-gray-100">
+    <!-- Navbar -->
+    <nav class="text-black p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold">Admin Panel</a>
+            <a href="/logout" class="text-sm">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto mt-8">
+        <div class="flex flex-col md:flex-row">
+
+            <!-- Sidebar -->
+            <div class="w-full md:w-1/4 bg-gray-200 p-4">
+                <h2 class="text-lg font-semibold mb-4">Navigation</h2>
+                <ul>
+                    <li><a href="#" class="block py-2 px-4 bg-gray-300 mb-2 rounded">Dashboard</a></li>
+                    <li><a href="/seller/plusproducts" class="block py-2 px-4 bg-gray-300 mb-2 rounded">Products</a></li>
+                </ul>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="w-full md:w-3/4 p-4 relative">
+                <h2 class="text-2xl font-semibold mb-4">Upload Clothing Product</h2>
+                <form action="/seller/push" method="POST">
+                    <div class="mb-4">
+                        <label for="title" class="block mb-2">Title</label>
+                        <input type="text" id="title" name="title" class="w-full px-4 py-2 border rounded">
+                    </div>
+                    <div class="mb-4">
+                        <label for="description" class="block mb-2">Description</label>
+                        <textarea id="description" name="description" rows="4" class="w-full px-4 py-2 border rounded"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="price" class="block mb-2">Price</label>
+                        <input type="text" id="price" name="price" class="w-full px-4 py-2 border rounded">
+                    </div>
+                    <div class="mb-4">
+                        <label for="gender" class="block mb-2">Gender</label>
+                        <select id="gender" name="gender" class="w-full px-4 py-2 border rounded">
+                            <option value="men">Men</option>
+                            <option value="women">Women</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="color" class="block mb-2">Color</label>
+                        <input type="text" id="color" placeholder="If multiple colors, use comma between colors" name="color" class="w-full px-4 py-2 border rounded">
+                    </div>
+                    <div class="mb-4">
+                        <label for="category" class="block mb-2">Category</label>
+                        <input type="text" id="category" name="category" class="w-full px-4 py-2 border rounded">
+                    </div>
+                    <div class="imagcontainer flex gap-3">
+                        <div class="mb-4">
+                            <label for="images" class="block mb-2">Cover image</label>
+                            <input type="text" id="images" name="mainImage" placeholder="Paste URL" required class="w-full">
+                        </div>
+                        <div class="mb-4">
+                            <label for="images" class="block mb-2">image 2</label>
+                            <input type="text" id="images" name="image2" placeholder="Paste URL" required class="w-full">
+                        </div>
+                        <div class="mb-4">
+                            <label for="images" class="block mb-2">image 3</label>
+                            <input required type="text" id="images" placeholder="Paste URL" name="image3" class="w-full">
+                        </div>
+                        <div class="mb-4">
+                            <label for="images" class="block mb-2">Image 4</label>
+                            <input type="text" placeholder="Paste URL" id="images" name="image4" class="w-full" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="images" class="block mb-2">Image 5</label>
+                            <input type="text" placeholder="Paste URL" id="images" name="image5" required class="w-full">
+                        </div>
+                    </div>
+                   
+                   <input type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded" value="Upload">
+                </form>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
+<%- include('./partials/Footer.ejs') %>
+<script defer src="/_vercel/insights/script.js"></script>

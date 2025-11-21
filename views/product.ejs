@@ -1,0 +1,162 @@
+<%- include('./partials/Header.ejs', {hidden: true}) %>
+<div class="font-sans bg-[#FFFFF0]">
+  <div class="grid bg-[#FFFFF0] items-start grid-cols-1 lg:grid-cols-3">
+    <!-- Images Section for Large Screens -->
+    <div class="hidden lg:grid col-span-2 grid-cols-2 h-[90vh] lg:sticky top-0">
+      <div class="grid grid-cols-2 gap-0">
+        <div>
+          <img id="img3" src="<%= product.image3 %>" alt="Product main" class="w-full h-full object-cover object-top shadow-md cursor-pointer" onclick="changeImage('img3','<%= product.image3 %>')" />
+        </div>
+        <div>
+          <img id="img2" src="<%= product.image2 %>" alt="Product" class="w-full h-full object-cover object-top shadow-md cursor-pointer" onclick="changeImage('img2','<%= product.image2 %>')" />
+        </div>
+        <div>
+          <img id="img5" src="<%= product.image5 %>" alt="Product" class="w-full h-full object-cover object-top shadow-md cursor-pointer" onclick="changeImage('img5','<%= product.image5 %>')" />
+        </div>
+        <div>
+          <img id="img4" src="<%= product.image4 %>" alt="Product" class="w-full h-full object-cover object-top shadow-md cursor-pointer" onclick="changeImage('img4','<%= product.image4 %>')" />
+        </div>
+      </div>
+      <div>
+        <img id="mainImage" src="<%= product.mainImage %>" alt="Product" class="w-full h-full object-cover object-top shadow-md" />
+      </div>
+    </div>
+
+    <div class="lg:hidden">
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <img src="<%= product.mainImage %>" alt="Product" class="w-full h-full object-cover object-top shadow-md" />
+          </div>
+          <div class="swiper-slide">
+            <img src="<%= product.image2 %>" alt="Product" class="w-full h-full object-cover object-top shadow-md" />
+          </div>
+          <div class="swiper-slide">
+            <img src="<%= product.image3 %>" alt="Product" class="w-full h-full object-cover object-top shadow-md" />
+          </div>
+          <div class="swiper-slide">
+            <img src="<%= product.image4 %>" alt="Product" class="w-full h-full object-cover object-top shadow-md" />
+          </div>
+          <div class="swiper-slide">
+            <img src="<%= product.image5 %>" alt="Product" class="w-full h-full object-cover object-top shadow-md" />
+          </div>
+        </div>
+      </div>
+  
+      <div class="swiper-pagination relative mt-4"></div>
+    </div>
+
+ 
+    <div class="px-10 py-6 max-lg:max-w-2xl">
+      <div>
+        <h2 class="text-2xl font-extrabold text-gray-800"><%= product.title %></h2>
+        <p class="text-sm text-gray-400 mt-2">Brand: Rêve d'Or</p>
+      </div>
+
+      <div class="flex space-x-1 mt-4">
+      
+        <svg class="w-5 fill-[#facc15]" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+        </svg>
+        <svg class="w-5 fill-[#facc15]" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+        </svg>
+        <svg class="w-5 fill-[#facc15]" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+        </svg>
+        <svg class="w-5 fill-[#facc15]" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+        </svg>
+        <svg class="w-5 fill-[#CED5D8]" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+        </svg>
+        <button type="button" class="px-2.5 py-1.5 bg-gray-100 text-xs text-gray-800 rounded-md flex items-center !ml-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-3 mr-1" fill="currentColor" viewBox="0 0 32 32">
+            <path d="M14.236 21.954h-3.6c-.91 0-1.65-.74-1.65-1.65v-7.201c0-.91.74-1.65 1.65-1.65h3.6a.75.75 0 0 1 .75.75v9.001a.75.75 0 0 1-.75.75zm-3.6-9.001a.15.15 0 0 0-.15.15v7.2a.15.15 0 0 0 .15.151h2.85v-7.501z" data-original="#000000" />
+            <path d="M20.52 21.954h-6.284a.75.75 0 0 1-.75-.75v-9.001c0-.257.132-.495.348-.633.017-.011 1.717-1.118 2.037-3.25.18-1.184 1.118-2.089 2.28-2.201a2.557 2.557 0 0 1 2.17.868c.489.56.71 1.305.609 2.042a9.468 9.468 0 0 1-.678 2.424h.943a2.56 2.56 0 0 1 1.918.862c.483.547.708 1.279.617 2.006l-.675 5.401a2.565 2.565 0 0 1-2.535 2.232zm-5.534-1.5h5.533a1.06 1.06 0 0 0 1.048-.922l.675-5.397a1.046 1.046 0 0 0-1.047-1.182h-2.16a.751.751 0 0 1-.648-1.13 8.147 8.147 0 0 0 1.057-3 1.059 1.059 0 0 0-.254-.852 1.057 1.057 0 0 0-.795-.365c-.577.052-.964.435-1.04.938-.326 2.163-1.71 3.507-2.369 4.036v7.874z" data-original="#000000" />
+            <path d="M4 31.75a.75.75 0 0 1-.612-1.184c1.014-1.428 1.643-2.999 1.869-4.667.032-.241.055-.485.07-.719A14.701 14.701 0 0 1 1.25 15C1.25 6.867 7.867.25 16 .25S30.75 6.867 30.75 15 24.133 29.75 16 29.75a14.57 14.57 0 0 1-5.594-1.101c-2.179 2.045-4.61 2.81-6.281 3.09A.774.774 0 0 1 4 31.75zm12-30C8.694 1.75 2.75 7.694 2.75 15c0 3.52 1.375 6.845 3.872 9.362a.75.75 0 0 1 .217.55c-.01.373-.042.78-.095 1.186A11.715 11.715 0 0 1 5.58 29.83a10.387 10.387 0 0 0 3.898-2.37l.231-.23a.75.75 0 0 1 .84-.153A13.072 13.072 0 0 0 16 28.25c7.306 0 13.25-5.944 13.25-13.25S23.306 1.75 16 1.75z" data-original="#000000" />
+          </svg>
+          <%= Math.floor((Math.random()* 100) + 10) %> Reviews
+        </button>
+      </div>
+
+      <!-- Product Price -->
+      <div class="mt-8">
+        <p class="text-gray-800 text-3xl font-bold">$<%= product.price %></p>
+        <p class="text-gray-400 text-xl mt-1"><strike>$<%= (product.price + 46).toFixed(2) %></strike> <span class="text-sm ml-1">Tax included</span></p>
+      </div>
+
+       <!-- Product Sizes -->
+       <div class="mt-8">
+        <h3 class="text-lg font-bold text-gray-800">Choose a Size</h3>
+        <div class="flex flex-wrap gap-4 mt-4">
+          <button type="button" class="size-btn w-12 h-12 border-2 hover:border-gray-800 font-semibold text-gray-800 text-sm rounded-full flex items-center justify-center shrink-0" onclick="selectSize(this)">SM</button>
+          <button type="button" class="size-btn w-12 h-12 border-2 hover:border-gray-800 border-gray-800 font-semibold text-gray-800 text-sm rounded-full flex items-center justify-center shrink-0" onclick="selectSize(this)">MD</button>
+          <button type="button" class="size-btn w-12 h-12 border-2 hover:border-gray-800 font-semibold text-gray-800 text-sm rounded-full flex items-center justify-center shrink-0" onclick="selectSize(this)">LG</button>
+          <button type="button" class="size-btn w-12 h-12 border-2 hover:border-gray-800 font-semibold text-gray-800 text-sm rounded-full flex items-center justify-center shrink-0" onclick="selectSize(this)">XL</button>
+        </div>
+      </div>
+
+      <div class="mt-8">
+        <h3 class="text-lg font-bold text-gray-800">Choose a Color</h3>
+        <div class="flex flex-wrap gap-2 mt-4">
+          <% if (product.color && Array.isArray(product.color)) { %>
+            <% for (let j = 0; j < product.color.length; j++) { %>
+              <span class="color-dot mt-4 inline-block h-6 w-6 rounded-full cursor-pointer" style="background-color: <%= product.color[j] %>;" onclick="selectColor(this)"></span>
+            <% } %>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="mt-8 space-y-4">
+        <button onclick="window.location.href='/checkout/<%= product.id %>'" type="button" class="w-full px-4 py-3 bg-gray-800 hover:bg-gray-900 text-white text-sm font-semibold rounded">Buy now</button>
+        <button type="button" data-fitId="<%= product._id %>" class="w-full add-btn px-4 py-2.5 border border-gray-800 bg-transparent hover:bg-gray-50 text-gray-800 text-sm font-semibold rounded">Add to cart</button>
+      </div>
+
+  
+      <div class="mt-8">
+        <div>
+          <h3 class="text-lg font-bold text-gray-800">Product Description</h3>
+          <p class="text-sm text-gray-800 mt-4"><%= product.description %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('./partials/Footer.ejs') %>
+<script>
+  function changeImage(clickedImageId, newSrc) {
+    const mainImage = document.getElementById('mainImage');
+    const clickedImage = document.getElementById(clickedImageId);
+    const tempSrc = mainImage.src;
+    mainImage.src = newSrc;
+    clickedImage.src = tempSrc;
+  }
+
+  var swiper = new Swiper('.swiper-container', {
+    slidesPerView: 1,
+    spaceBetween: 10,
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+  });
+
+  addToCart();
+  function selectColor(color) {
+    const dots = document.querySelectorAll('.color-dot');
+    dots.forEach(dot => {
+      dot.classList.remove('border-2', 'border-gray-800');
+    });
+    event.target.classList.add('border-2', 'border-gray-800');
+  }
+
+  const sizeButtons = document.querySelectorAll('.size-btn');
+  sizeButtons.forEach(button => {
+    button.addEventListener('click', function () {
+      sizeButtons.forEach(btn => btn.classList.remove('border-gray-800'));
+      this.classList.add('border-gray-800');
+    });
+  });
+</script>

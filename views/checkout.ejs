@@ -1,0 +1,88 @@
+<%- include('./partials/Header.ejs', {hidden: true}) %>
+    
+<div class="bg-[#FFFFF0]">
+    <body class="bg-gray-100">
+        <div class="container mx-auto px-4 py-8 fade-in">
+            <div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6">
+                <h2 class="text-2xl font-semibold mb-6 text-gray-700">Checkout</h2>
+                
+                <form action="/checkout" method="post">
+                    <!-- Personal Information -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-medium text-gray-700 mb-4">Personal Information</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">First Name</label>
+                                <input required name="fullName" type="text" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="John">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Last Name</label>
+                                <input required name="lastName" type="text" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="Doe">
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="mb-6">
+                        <h3 class="text-lg font-medium text-gray-700 mb-4">Shipping Information</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Address</label>
+                                <input required type="text" name="address" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="123 Main St">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">City</label>
+                                <input required name="city" type="text" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="Los Angeles">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">State</label>
+                                <input required name="state" type="text" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="CA">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">ZIP Code</label>
+                                <input required name="zip" type="text" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="90001">
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Payment Information -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-medium text-gray-700 mb-4">Payment Information</h3>
+                        <div class="flex items-center">
+                            <input required type="checkbox" id="cod" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                            <label for="cod" class="ml-2 block text-sm text-gray-700">Cash on Delivery</label>
+                        </div>
+                    </div>
+    
+                    <!-- Order Summary -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-medium text-gray-700 mb-4">Order Summary</h3>
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-700">Subtotal</span>
+                                <span class="text-gray-700">$<%=product.price%></span>
+                            </div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-700">Shipping</span>
+                                <span class="text-gray-700">$5.00</span>
+                            </div>
+                            <div class="flex justify-between font-semibold">
+                                <span class="text-gray-700">Total</span>
+                                <span class="text-gray-700">$<%=(product.price + Number(5)).toFixed(2)%></span>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Submit Button -->
+                    <div class="text-right">
+                        <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Place Order</button>
+                    </div>
+                    <input required name="single" value="single" type="text" class="hidden" placeholder="">
+                    <input required name="productId" value="<%=product._id%>" type="text" class="hidden">
+                    <input required name="name" value="<%=product.title%>" type="text" class="hidden">
+                </form>
+            </div>
+        </div>
+    </body>
+    
+</div>
+<%- include('./partials/Footer.ejs') %>

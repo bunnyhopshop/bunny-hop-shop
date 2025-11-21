@@ -1,0 +1,288 @@
+<%- include('partials/Header.ejs') %>
+<div class="wrapper bg-[#FFFFF0] overflow-x-hidden h-full w-screen">
+  <div class="page1 h-[117vh] overflow-hidden w-full">
+    <section
+      class="w-full topmost bg-gradient-to-r from-purple-100 to-pink-100 h-1/2 flex max-sm:flex-col relative p-5 px-8 gap-3"
+    >
+      <button
+        onclick="window.location.href='/products/66643c8ecccf0d60cab23fba'"
+        class="text-white text-xs m-6 icapable link top-[15%] sm:hidden absolute left-[78%] -translate-x-1/2 text-center flex items-center flex-col justify-center bg-pink-800 py-1 rounded-xl whitespace-nowrap link0 px-2"
+      >
+        Make it yours
+        <span class="text-center text-xs material-symbols-outlined">
+          trending_flat
+        </span>
+      </button>
+      <div
+        class="w-3/4 h-full bg-fuchsia-200 rounded-xl relative overflow-hidden glamdiv"
+      >
+        <h1
+          class="text-white glam-text tracking-widest max-sm:text-base text-4xl m-6"
+        >
+          The most <span class="text-yellow-500">Glamorous</span> <br /><span
+            class="ml-2 text-blue-600"
+            >Dress</span
+          >
+        </h1>
+        <button
+          onclick="window.location.href='/products/66643c8ecccf0d60cab23fba'"
+          class="text-white link link0 text-2xl 2xl:mt-48 mx-6 sm:text-base 2xl:44 lg:mt-40 md:mt-28 sm:mt-24 h-fit w-fit py-2 px-5 max-md:absolute text-center flex items-center justify-center gap-1 max-sm:hidden bg-pink-800 z-50 rounded-full py-1 px-2"
+        >
+          Make it yours
+          <span class="text-center material-symbols-outlined">
+            trending_flat
+          </span>
+        </button>
+        <img
+          class="h-[62vh] w-full top-full left-[20%] object-contain opacity-1 glamhover absolute"
+          src="/media/glam.png"
+          alt=""
+        />
+        <img
+          class="h-[100vh] w-fit top-[80%] -translate-y-1/2 left-[28%] glam object-contain absolute opacity-1"
+          src="/media/glam-1.png"
+          alt=""
+        />
+      </div>
+      <div
+        class="w-1/2 max-sm:ml-auto h-full bg-cyan-100 rounded-xl sm:relative overflow-hidden mens-section"
+      >
+        <h1
+          class="absolute shiftml max-sm:mt-12 max-sm:-ml-48 m-6 text-rose-500 lg:text-5xl text-center"
+        >
+          20% <span class="text-black lg:text-xl">off</span
+          ><span class="text-black lg:text-xl oswald">
+            <br />
+            <span class="diva">Fresh deal,</span> <a href="">GRAB NOW!</a></span
+          >
+        </h1>
+        <button
+          onclick="window.location.href='/products/6673de9c9fac82b0726a1431'"
+          class="text-white link link1 flex justify-items-center px-4 opacity-0 py-2 2xl:mt-72 max-sm:-ml-48 max-sm:text-base sm:mt-64 ml-6 absolute max-sm:mt-28 max-lg:scale-75 lg:ml-6 sm:ml-0 bg-pink-800 max-sm:scale-70 z-50 rounded-full py-1 px-2"
+        >
+          Make it yours
+          <span class="text-center material-symbols-outlined">
+            trending_flat
+          </span>
+        </button>
+        <img
+          class="h-full w-full sm-object-cover sm:ml-24 md:object-contain"
+          src="/media/mens.png"
+          alt="product image"
+        />
+      </div>
+    </section>
+    <section class="w-screen overflow-x-hidden relative">
+      <div
+        class="top w-screen flex items-center justify-between p-6 max-xl:px-6 max-xl:py-4 max-xl:sticky -top-[2%]"
+      >
+        <div class="text-4xl max-2xl:text-2xl">
+          <h1>Featured Products</h1>
+        </div>
+        <div class="flex gap-3 2xl:opacity-0 swiping-btn ">
+          <i
+            class="ri-arrow-left-s-line s-left max-md:text-base text-2xl text-black border-2 rounded-xl border-solid p-2 max-sm:p-1 border-bg-white"
+          ></i>
+          <i
+            class="ri-arrow-right-s-line max-sm:p-1 s-right max-md:text-base text-2xl text-black border-2 rounded-xl border-solid p-2 border-bg-white"
+          ></i>
+        </div>
+      </div>
+      <div
+        class="w-screen s-container max-xl:overflow-x-scroll custom-scrollbar ease-linear duration-300"
+      >
+        <div
+          class="h-fit w-fit max-sm:p-2 max-sm:px-6 md:px-6 flex gap-6 px-6 2xl:py-6 overflow-x-hidden xl:px-16 2xl:ml-2"
+        >
+          <% feat.forEach((product) => { %>
+          <div
+            class="cards edge h-72 w-64 overflow-hidden rounded-xl flex flex-col max-sm:shadow-md 2xl:shadow-md  justify-end items-end"
+          >
+            <div class="h-full w-full relative">
+              <img
+                onclick="window.location.href='/products/<%=product._id%>'"
+                class="h-full opacity-1 w-full ease-linear duration-200 object-cover mt-8"
+                src="<%= product.mainImage %>"
+                alt=""
+              />
+              <img
+                onclick="window.location.href='/products/<%=product._id%>'"
+                class="h-full opacity-0 absolute top-0 left-0 w-full object-cover mt-8 ease-linear duration-200 image2"
+                src="<%= product.image2 %>"
+                alt=""
+              />
+            </div>
+            <div
+              class=" z-50 min-h-10 w-full bg-white flex xl:itmes-start max-md:items-center 2xl:items-center justify-center"
+            >
+              <h2 class="text-center oswald"><%= product.title %></h2>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="page2 h-full">
+    <div
+      class="max-w-full h-fit bg-[#FFFFF0] sm:px-6 sm:py-8 lg:max-w-8xl lg:px-8"
+    >
+      <h1
+        class="text-2xl max-sm:text-2xl max-sm:px-6 tracking-tight text-gray-900 text-4xl"
+      >
+        Trending <span class="text-[#800020]">Outfits</span>
+      </h1>
+
+      <div
+        class="mt-10 ml-6 grid grid-cols-1 gap-x-2 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 max-sm:mt-0 max-sm:ml-0 max-sm:py-6"
+      >
+        <% trendy.forEach((fit) => { %>
+        <div class="group relative h-[80%] w-[85%] max-sm:mx-auto scroll-card">
+          <div
+            class="aspect-h-1 aspect-w-1 w overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
+          >
+            <img
+              onclick="window.location.href='products/<%= fit._id%>'"
+              src="<%=fit.mainImage%>"
+              alt="outfit image"
+              class="h-full w-full object-cover object-center lg:h-full lg:w-full"
+            />
+          </div>
+          <div class="mt-4 flex justify-between">
+            <div>
+              <h3 class="text-lg text-gray-700 lg:h-28 xl:h-16 xl:w-56">
+                <a href="/products/<%=fit._id%>">
+                  <span aria-hidden="true" class="absolute"></span>
+                  <%= fit.title%>
+                </a>
+              </h3>
+              <p class="">
+                <% if (fit.color && Array.isArray(fit.color)) { %> <% for (let j
+                = 0; j < fit.color.length; j++) { %>
+                <span
+                  class="color-dot mt-4 inline-block h-4 w-4 rounded-full"
+                  style="
+                    background-color: <%= fit.color[j] %>;
+                    margin-right: 4px;
+                  "
+                ></span>
+                <% } %> <% } %>
+              </p>
+            </div>
+            <p class="text-2xl font-medium text-gray-900">$<%= fit.price%></p>
+          </div>
+          <div
+            class="box h-12 max-sm:h-10 w-full bg-black flex items-center mt-2"
+          >
+            <button
+              data-fitId="<%=fit._id%>"
+              class="w-full h-full bg-slate-500 text-white flex gap-2 items-center justify-center add-btn"
+            >
+              <i class="c-icon ri-shopping-cart-2-line"></i> Add to cart
+            </button>
+          </div>
+        </div>
+        <%})%>
+      </div>
+    </div>
+  </div>
+  <div class="page3 h-screen w-full flex flex-col md:flex-row">
+    <section
+      class="w-full md:w-1/2 h-1/2 md:h-full flex flex-col justify-center items-center gap-6 p-4"
+    >
+      <h1 class="text-4xl md:text-6xl text-center md:text-left diva-text">
+        Every Girl's a <span class="diva text-6xl md:text-9xl">DIVA</span>
+      </h1>
+      <p class="w-full md:w-[600px] text-center diva-text">
+        Unveil your unique style with our fabulous collection. Ready for a
+        grown-up glow? Explore our women's section!
+      </p>
+      <button onclick="window.location.href='/fits/women'"
+        class="px-6 py-2 text-xl md:text-2xl rounded-lg text-center bg-black text-white diva-text"
+      >
+        SHOP NOW!
+      </button>
+    </section>
+    <section
+      class="w-full md:w-3/5 h-1/2 md:h-full diva-container overflow-hidden flex justify-center items-center hover:scale-105 ease-in duration-150 relative group"
+    >
+      <div
+        class="overlay h-full w-full opacity-0 top-full group-hover:top-0 duration-200 left-0 absolute"
+      ></div>
+      <button onclick="window.location.href='/fits/women'"
+        class="absolute divabtn hover:top-1/2 top-full left-1/2 bg-pink-500 opacity-0 -translate-x-1/2 -translate-y-1/2 rounded-lg py-1 px-4 lg:text-2xl text-white text-center whitespace-nowrap"
+      >
+        Pick your fit now!
+      </button>
+      <section class="w-full h-full bg-red-200">
+        <img
+          class="w-full h-full object-cover object-top"
+          src="/media/bella.jpg"
+          alt=""
+        />
+      </section>
+    </section>
+  </div>
+
+  <div class="page4 h-screen w-full flex flex-col md:flex-row relative">
+    <section
+      class="h-1/2 md:h-full w-full md:w-1/2 flex items-center justify-center relative"
+    >
+      <div class="mens-container w-[90%] h-[90%] relative mx-auto mt-10 group">
+        <h1
+          class="absolute whitespace-nowrap top-[58%] md:top-[50%] left-[6%] md:left-[3%] transform -translate-x-1/2 -translate-y-1/2 md:-translate-y-1/2 -rotate-90 transition-transform duration-500 ease-in-out group-hover:rotate-0 md:text-2xl group-hover:max-md:ml-4 group-hover:2xl:ml-2 group-hover:xl:ml-4 group-hover:lg:ml-6 group-hover:md:ml-8 2xl:text-4xl xl:text-3xl z-50 mens-text"
+        >
+          EXPLORE OUR <span class="text-[#000080]">MEN'S</span> GENRE
+        </h1>
+        <div
+          class="md:h-[85%] w-3/4 h-4/5 m-auto md:ml-16 mt-12 bg-black relative overflow-hidden"
+        >
+          <div
+            class="overlay2 h-full w-full group-hover:top-0 opacity-0 duration-500 top-full left-0 absolute"
+          ></div>
+          <button onclick="window.location.href='/fits/men'"
+            class="absolute mensbtn group-hover:top-[68%] group-hover:md:top-[60%] top-full left-1/2 opacity-0 -translate-x-1/2 -translate-y-1/2 rounded-lg py-1 px-2 md:px-4 text-base md:text-2xl text-white text-center whitespace-nowrap"
+          >
+            Take Me!
+          </button>
+          <img
+            class="h-full w-full object-cover"
+            src="/media/chico.jpg"
+            alt=""
+          />
+        </div>
+      </div>
+    </section>
+    <section
+      class="w-full md:w-1/2 h-1/2 md:h-full flex flex-col justify-center items-center gap-6 p-4"
+    >
+      <h1
+        class="text-3xl md:text-5xl bebas whitespace-nowrap text-centers scroll-men"
+      >
+        Fewer clothes, better quality
+      </h1>
+      <p class="w-full md:w-[600px] text-center scroll-men">
+        Get equipped with apparel that supports every endeavor. Our men’s
+        collection delivers function and form in equal measure.
+      </p>
+      <button onclick="window.location.href='/fits/men'"
+        class="px-6 py-2 text-xl md:text-2xl rounded-lg text-center bg-black text-white scroll-men"
+      >
+        EXPLORE NOW!
+      </button>
+    </section>
+  </div>
+</div>
+<% if(error && error.length > 0) { %>
+  <div class="flash fixed inset-0 flex z-50 justify-center items-center ">
+    <p class="text-red-600 rounded py-1 px-4 h-fit w-fit bg-gray-200 text-lg md:text-2xl lg:text-2xl"><%= error[0] %></p>
+  </div>
+<% } %> 
+<%- include('partials/Footer.ejs') %>
+<script defer src="/_vercel/insights/script.js"></script>
+<script>
+  addToCart();
+  animations();
+  jsTouch();
+  swiperAnimation();
+</script>

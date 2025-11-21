@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  
+  <style>
+    video{
+        height: 700px;
+        width: 700px;
+    }
+  </style>
+</head>
+<body>
+   <div class="wrapper w-screen relative overflow-x-hiddden bg-[#FFFFF0]">
+    <div class="page h-screen flex lg:flex-row flex-col">
+       <div class="left lg:w-1/2 w-full h-full flex-col flex max-lg:px-2">
+       <h1 class=" logo flex absolute text-5xl mt-8 ml-4 font-sans">
+        <span>R</span>
+        <span>ê</span>
+        <span>v</span>
+        <span>e</span> 
+        <span>&nbsp;</span>
+        <span>d’</span>
+        <span class="text-yellow-400">O</span>
+       <span>r</span>
+    </h1> 
+        <section class="lg:h-screen max-lg:mt-36 max-lg:ml-0 h-fit lg:w-96 max-lg:rounded justify-items-center w-[95vw] py-8 bg-pink-300 lg:ml-60 relative">
+            <div class="container lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 flex justify-center flex-col items-center gap-2 font-serif">
+                <div class="ups flex flex-col items-center justify-center"><h1 class=" text-5xl">Lets <span class="text-blue-500">Begin</span> </h1>
+                <p class="">Create your account now!</p>
+            </div>
+            <div class="flex flex-col font-sans ">
+                <form action="/register" method="post" class="flex flex-col gap-4 items-center">
+                    <input type="text" placeholder="Full Name" name="fullName" class="w-64 h-fit py-1 px-2 rounded" required>
+                    <input type="email" placeholder="Email" name="email" class="w-64 h-fit py-1 px-2 rounded" required>
+                    <input type="text" placeholder="Username" name="username" class="w-64 h-fit py-1 px-2 rounded" required>
+                    <input type="password" placeholder="Password" name="password" class="w-64 h-fit py-1 px-2 rounded" required>
+                    <%if(registerError && registerError.length > 0) { %>
+                        <p class="text-red-500 font-medium"><%= registerError[0] %></p>
+                    <% } %>
+                    <p class="mt-4 lg:hidden text-blue-800">Already a user? <a href="/login">Login here</a></p>
+                    <button type="submit" name="submit" class="h-fit mt-0 lg:mt-4 w-[90%] bg-blue-500 text-white py-2 px-6 rounded-lg hover:shadow-black-400/50 hover:shadow-lg hover:scale-125 transition-all ease-linear duration-100">Get Started</button>
+                </form>
+            </div>
+            </div>
+
+        </section>
+        <% if(sellerError && sellerError.length > 0) { %>
+            <div class="seller fixed inset-0 flex justify-center items-center ">
+                <div class="rounded-lg h-12 flex items-center justify-center p-4 w-11/12 max-w-lg bg-gray-200">
+                    <p class="text-red-600 text-lg md:text-2xl lg:text-3xl"><%= sellerError[0] %></p>
+                </div>
+            </div>
+        <% } %>        
+       </div>
+       <div class="right w-1/2 h-screen relative lg:block hidden">
+        <div class="container absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center flex-col items-center gap-2 font-serif">
+            <div class="ups flex flex-col items-center justify-center">
+            <h1 class="text-4xl">Already a <span class="text-blue-500">user?</span></h1>
+            <p class="text-2xl">Login here</p>
+        </div>
+        <div class="flex flex-col font-sans ">
+            <form action="/login" method="post" class="flex flex-col gap-4 items-center">
+                <input type="email" placeholder="Email" name="email" class="w-64 h-fit py-1 px-2 rounded bg-slate-200">
+                <input type="password" placeholder="Password" name="password" class="w-64 h-fit py-1 px-2 rounded bg-slate-200">
+                <%if(loginError && loginError.length > 0) { %>
+                    <p class="text-red-500 font-medium"><%= loginError[0] %></p>
+                <% } %>
+                <button type="submit" name="submit" class="h-fit w-fit bg-blue-500 border-2 border-bg-gray-200 py-1 px-6 rounded-lg text-white
+                " >Log in</button>
+            </form>
+            
+        </div>
+       
+        </div>
+       </div>
+    </div>
+     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+
+    <dotlottie-player class="absolute cart max-lg:scale-50 -top-[11%] left-[5%] lg:left-[42%] lg:top-[45%]" src="https://lottie.host/9e339971-8d89-443f-86b5-01c2d4b54897/rB5kN0ac9C.json" background="transparent" speed="1" style="width: 350px; height: 350px;" loop autoplay></dotlottie-player>
+   </div>
+   
+</body>
+</html>

@@ -1,0 +1,362 @@
+@font-face {
+    font-family: 'rock';
+    src: url(../fonts/RockSalt-Regular.woff2);
+}
+@font-face {
+    font-family: 'main';
+    src: url(../fonts/oswald.woff2);
+}
+
+@font-face {
+    font-family: 'bebas';
+    src: url(../fonts/bebas.woff2);
+}
+@font-face {
+    font-family: 'oswald';
+    src: url(../fonts/oswald.woff2);
+}
+html,body{
+    width: 100vw;
+    overflow-x: hidden !important;
+    
+}
+.custom-scrollbar {
+    overflow-x: scroll;
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.topmost h1{
+    font-family: 'rock';
+}
+.top h1{
+    font-family: 'main';
+    
+}
+.p-17{
+    padding-left: 4.5rem !important;;
+}
+.page2 h1, .page3 button{
+    font-family: 'main';
+    letter-spacing: 1px;
+    
+}
+.page3 h1{
+    font-family: 'bebas';
+
+}
+.diva{
+    font-family: 'main';
+    -webkit-animation: diva forwards infinite cubic-bezier(0.19, 1, 0.22, 1) 2s ;
+            animation: diva forwards infinite cubic-bezier(0.19, 1, 0.22, 1) 2s ;
+}
+@-webkit-keyframes diva {
+
+    0%{
+        color: #0F52BA;
+    }
+    20%{
+        color: #0F52BA;
+    }
+    40%{
+        color: aqua;
+
+    }
+    60%{
+color: #DE5D83;
+    }
+    80%{
+        color: 9B111E;
+    }
+    100%{
+        color: #DE5D83;
+    }
+}
+@keyframes diva {
+
+    0%{
+        color: #0F52BA;
+    }
+    20%{
+        color: #0F52BA;
+    }
+    40%{
+        color: aqua;
+
+    }
+    60%{
+color: #DE5D83;
+    }
+    80%{
+        color: 9B111E;
+    }
+    100%{
+        color: #DE5D83;
+    }
+}
+.rock{
+    font-family: rock !important;
+}
+.bebas{
+    font-family: bebas !important;
+}
+.oswald{
+    font-family: oswald !important;
+}
+.color-dot {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%; /* Creates circles */
+    border: 1px solid rgb(165, 160, 160);
+    display: inline-block; 
+    margin: 0 2px; 
+  }
+  .overlay {
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(50%, rgba(0, 0, 0, 20)), to(rgba(0, 0, 0, 0))) !important;
+    background: -o-linear-gradient(bottom, rgba(0, 0, 0, 20) 50%, rgba(0, 0, 0, 0) 100%) !important;
+    background: linear-gradient(to top, rgba(0, 0, 0, 20) 50%, rgba(0, 0, 0, 0) 100%) !important;
+  }
+  .overlay2 {
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(50%, rgba(0, 0, 0, 80)), to(rgba(0, 0, 0, 0))) !important;
+    background: -o-linear-gradient(bottom, rgba(0, 0, 0, 80) 50%, rgba(0, 0, 0, 0) 100%) !important;
+    background: linear-gradient(to top, rgba(0, 0, 0, 80) 50%, rgba(0, 0, 0, 0) 100%) !important;
+  }
+  
+  .divabtn{
+    -webkit-transition: all cubic-bezier(0.19, 1, 0.22, 1) 1.5s;
+    -o-transition: all cubic-bezier(0.19, 1, 0.22, 1) 1.5s;
+    transition: all cubic-bezier(0.19, 1, 0.22, 1) 1.5s;
+  }
+.mensbtn{
+        background-color: darkred !important;
+        -webkit-transition: all cubic-bezier(0.19, 1, 0.22, 1) 3s;
+        -o-transition: all cubic-bezier(0.19, 1, 0.22, 1) 3s;
+        transition: all cubic-bezier(0.19, 1, 0.22, 1) 3s;
+      
+ }
+  .diva-container:hover .divabtn{
+    opacity: 1 !important;
+    top: 50%;
+  }
+  .diva-container:hover .overlay{
+    top: 0;
+    -webkit-transition: all cubic-bezier(0.19, 1, 0.22, 1) 1s;
+    -o-transition: all cubic-bezier(0.19, 1, 0.22, 1) 1s;
+    transition: all cubic-bezier(0.19, 1, 0.22, 1) 1s;
+    opacity: 0.5 !important;
+  }
+  .mens-container:hover .mensbtn{
+    opacity: 1 !important;
+  }
+  .mens-container:hover{
+    -webkit-animation: color 2 ease-in linear;
+            animation: color 2 ease-in linear;
+  }
+  .mens-container:hover .mens-text{
+   
+    -webkit-animation: mens 1.5s linear forwards;
+   
+            animation: mens 1.5s linear forwards;
+  }
+  .mens-container:hover .overlay2{
+    top: 0;
+    -webkit-transition: all cubic-bezier(0.19, 1, 0.22, 1) 3s;
+    -o-transition: all cubic-bezier(0.19, 1, 0.22, 1) 3s;
+    transition: all cubic-bezier(0.19, 1, 0.22, 1) 3s;
+    opacity: 0.8 !important;
+  }
+  .flash{
+    -webkit-animation: flash 6s forwards ease-out ;
+            animation: flash 6s forwards ease-out ;
+}
+@-webkit-keyframes flash {
+    0%{
+        top: 60%;
+        opacity: 0;
+    }
+    10%{
+        top: 50%;
+        opacity: 1;
+    }
+    50%{
+        top: 50%;
+        opacity: 1;
+    }
+    70%{
+        opacity: 1
+    }
+    90%{
+        opacity: 1;
+    }
+    100%{
+        top: 50%;
+        opacity: 0;
+    }
+}
+@keyframes flash {
+    0%{
+        top: 60%;
+        opacity: 0;
+    }
+    10%{
+        top: 50%;
+        opacity: 1;
+    }
+    50%{
+        top: 50%;
+        opacity: 1;
+    }
+    70%{
+        opacity: 1
+    }
+    90%{
+        opacity: 1;
+    }
+    100%{
+        top: 50%;
+        opacity: 0;
+    }
+}
+  .link { 
+    -webkit-box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2); 
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2); 
+  }
+  
+  
+ @-webkit-keyframes mens {
+    0%{
+        left: 0;
+        color: black !important;
+    }
+    50%{
+        left: 25%;
+        color: white !important;
+    }
+    100%{
+        left: 45%;
+   
+    }
+ }
+  
+  
+ @keyframes mens {
+    0%{
+        left: 0;
+        color: black !important;
+    }
+    50%{
+        left: 25%;
+        color: white !important;
+    }
+    100%{
+        left: 45%;
+   
+    }
+ }
+  @-webkit-keyframes color {
+    0%{
+        color: black !important;
+    }
+    100%{
+        color: white !important;
+    }
+  }
+  @keyframes color {
+    0%{
+        color: black !important;
+    }
+    100%{
+        color: white !important;
+    }
+  }
+  .classic{
+    -webkit-transition: all cubic-bezier(0.19, 1, 0.22, 1) 2s;
+    -o-transition: all cubic-bezier(0.19, 1, 0.22, 1) 2s;
+    transition: all cubic-bezier(0.19, 1, 0.22, 1) 2s;
+  }
+  @media screen and (max-width: 312px) {
+   .mens-text{
+    font-size: .8rem !important;
+   }
+   .topmost .icapable {
+    -webkit-transform: scale(0.7) !important;
+        -ms-transform: scale(0.7) !important;
+            transform: scale(0.7) !important;
+    left: 60%;
+   }
+   .shiftml{
+    font-size: .8rem;
+    margin-left: -8rem !important;
+}
+.link1{
+    -webkit-transform: scale(.7) !important;
+        -ms-transform: scale(.7) !important;
+            transform: scale(.7) !important;
+    margin-left: -9rem !important;
+}
+  }
+  .active{
+    color: rgb(253, 224, 71) !important;
+  }
+  .white{
+    color: white !important;
+  }
+  
+  @media screen and (min-width: 312px) and (max-width: 412px) {
+    .shiftml {
+      margin-left: -10rem !important;
+    }
+    .link1{
+        -webkit-transform: scale(.7) !important;
+            -ms-transform: scale(.7) !important;
+                transform: scale(.7) !important;
+        margin-left: -10.5rem !important;
+    }
+  }
+  @-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+  @keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+.fade-in {
+    -webkit-animation: fadeIn 1s ease-in-out;
+            animation: fadeIn 1s ease-in-out;
+}
+
+#searchButton {
+    @apply rounded-full bg-gray-100 hover:bg-gray-200 p-2;
+  }
+  
+  #searchBar {
+    @apply transition duration-150 ease-in-out;
+  }
+  
+  @media screen and (min-width: 1440px) {
+    .swiping-btn{
+        display: none !important;
+        opacity: 0 !important;
+    }
+  }
+
+  @font-face {
+    font-family: 'mono';
+    src: url(/public/fonts/RobotoMono-VariableFont_wght.woff2);
+  }
+  .roboto{
+    font-family: 'mono' !important;
+  }
+  

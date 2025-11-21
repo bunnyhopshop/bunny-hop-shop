@@ -1,0 +1,15 @@
+<%- include('./partials/Header.ejs', {hidden: true}) %>
+<div class="wrapper bg-gray-100 flex items-center justify-center min-h-screen relative">
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+
+    <dotlottie-player class="cart-done max-sm:scale-75 max-sm:top-[42%] absolute top-[40%] left-1/2 transform -translate-x-1/2 -translate-y-1/2" src="https://lottie.host/ba63ec0b-0b2e-4ce4-a5d2-23530049fef2/9RNhr1lhwl.json" background="transparent" speed="1" style="width: 250px; height: 250px;" loop autoplay></dotlottie-player>
+    <div id="success-message" class="max-w-md w-full max-sm:scale-75 success-msg opacity-0 bg-white shadow-lg rounded-lg p-10 text-center fade-in-up">
+        <h2 class="text-2xl font-semibold text-gray-700 mt-4">Order Successful!</h2>
+        <p class="text-gray-600 mt-2">Thank you for your purchase. Your order has been placed successfully.</p>
+        <button class="mt-6 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" onclick="redirectToHomepage()">Go to Homepage</button>
+    </div>
+</div>
+<%- include('./partials/Footer.ejs') %>
+<script>
+    cartAnimation()
+</script>

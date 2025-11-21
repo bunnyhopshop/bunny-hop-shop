@@ -1,0 +1,80 @@
+<%- include('./partials/Header.ejs', {hidden: true}) %>
+<body class="bg-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-[#FFFFF0] text-black p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold">Admin Panel</a>
+            <a href="/logout" class="text-sm">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto mt-8">
+        <div class="flex flex-col md:flex-row">
+
+            <!-- Sidebar -->
+            <div class="w-full md:w-1/4 bg-gray-200 p-4">
+                <h2 class="text-lg font-semibold mb-4">Navigation</h2>
+                <ul>
+                    <li><a href="/seller/dashboard" class="block py-2 px-4 bg-gray-300 mb-2 rounded">Dashboard</a></li>
+                    <li><a href="/seller/plusproducts" class="block py-2 px-4 bg-gray-300 mb-2 rounded">Products</a></li>
+                </ul>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="w-full md:w-3/4 p-4 relative">
+                <h2 class="text-2xl font-semibold mb-4">Your Products</h2>
+                <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+                    <% products.forEach((fit) => { %>
+                    <div class="group relative flex flex-col">
+                      <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                        <img src="<%= fit.mainImage %>" alt="Product Image" class="h-full w-full object-cover object-center lg:h-full lg:w-full">
+                      </div>
+                      <div class="mt-4 flex justify-between">
+                        <div>
+                          <h3 class="text-sm text-gray-700">
+                            <a href="">
+                              <span aria-hidden="true" class="absolute inset-0"></span>
+                              <%= fit.title %>
+                            </a>
+                          </h3>
+                          <% if (fit.color && Array.isArray(fit.color)) { %>
+                            <% for (let j = 0; j < fit.color.length; j++) { %>
+                              <span class="color-dot mt-4 inline-block h-4 w-4 rounded-full" style="background-color: <%= fit.color[j] %>; margin-right: 4px;"></span>
+                            <% } %>
+                          <% } %>
+                        </div>
+                        <p class="text-sm font-medium text-gray-900"> $<%= fit.price %></p>
+                      </div>
+                      <div class="mt-auto flex flex-col space-y-2 sm:space-y-0 sm:space-x-2 sm:flex-row">
+                       <% if(fit.isApproved) { %>
+                        <button class="w-full mt-5 bg-green-500 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Approved 
+                        </button>
+                        <% } else {%> 
+                          <button class="w-full mt-5 bg-red-500 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Pending 
+                          </button>
+                        <% } %>
+                    
+                       
+                      </div>
+                    </div>
+                    <% }) %>
+                  </div>
+            </div>
+
+
+
+
+
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+
+</html>
+
+  
+<%- include('./partials/Footer.ejs') %>

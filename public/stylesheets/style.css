@@ -1,0 +1,85 @@
+
+@font-face {
+    font-family: 'main';
+    src: url(../fonts/oswald.woff2);
+}
+html,body{
+    width: 100vw;
+    overflow-x: hidden !important;
+}
+.container h1,p,input, button{
+    font-family: 'main';
+  
+}
+.logo{
+    animation-name: texts;
+    animation-duration: 1.5s;
+    animation-timing-function: all cubic-bezier(0.19, 1, 0.22, 1);
+}
+@keyframes texts {
+    0% {
+        opacity: 0;
+        margin-top: -5%;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+.cart{
+    animation-name: cart;
+    animation-duration: 3s;
+    animation-timing-function: all cubic-bezier(0.19, 1, 0.22, 1);
+    animation-iteration-count: infinite;
+}
+@keyframes cart {
+    0% {
+        opacity: 0;
+        
+    }
+    100% {
+        opacity: 1;
+        margin-left: 30%;
+    }
+}
+.seller{
+    animation: seller 6s forwards ease-out ;
+}
+@keyframes seller {
+    0%{
+        top: 60%;
+        opacity: 0;
+    }
+    10%{
+        top: 50%;
+        opacity: 1;
+    }
+    50%{
+        top: 50%;
+        opacity: 1;
+    }
+    70%{
+        opacity: 1
+    }
+    90%{
+        opacity: 1;
+    }
+    100%{
+        top: 50%;
+        opacity: 0;
+    }
+}
+@media screen and (max-width: 1024px) {
+    .cart{
+        z-index: 1;
+        scale: 0.6;
+    }
+  }
+  @media screen and (max-width: 324px) {
+    .cart{
+        z-index: 1;
+        scale: 0.4;
+        top: -9% !important;
+        left: -8% !important;
+    }
+  }
+  
