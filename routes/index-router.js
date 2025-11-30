@@ -458,5 +458,82 @@ router.get('/success-checkout', isLoggedInStrict, checkoutCheckout, async (req, 
     res.render('success-checkout', {user: req.user, cart, req: req})
 })
 
+router.post('/create/:id', async (req, res) => {
+  try {
+    const order = await orderModel.findById(req.params.id);
+    if (!order) {
+      return res.json({ success: false, message: "Order not found" });
+    }
+
+    const shipmentPayload = {
+      booked_packet_weight: 0.5,
+      booking_type: 2, // 2 = COD
+      cod_amount: order.totalAmount,
+      shipper_name: order.customerName,
+      shipper_phone: order.customerPhone,
+      shipper_address: order.shippingAddress,
+      shipment_origin_city: order.city,
+      shipment_destination_city: order.city,
+      shipment_items: "Order (COD)",
+      merchant_order_id: order._id.toString()
+    };
+
+    const shipmentResponse = await axios.post(process.env.LEOPARD_CREATE_SHIPMENT_URL, shipmentPayload,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.LEOPARD_API_KEY}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+    if (!shipmentResponse.data.tracking_number) {
+      return res.json({
+        success: false,
+        message: "Shipment failed: Tracking number not received"
+      });
+    }
+
+    const trackingNumber = shipmentResponse.data.tracking_number;
+
+    order.trackingNumber = trackingNumber;
+    order.status = "Shipped";
+    await order.save();
+
+    const pickupPayload = {
+      tracking_number: trackingNumber,
+      pickup_address: order.shippingAddress,
+      pickup_city: order.city,
+      payment_type: "COD",
+      instruction: "COD Order – Rider Pickup Required",
+      merchant_order_id: order._id.toString(),
+      contact_name: order.customerName,
+      contact_phone: order.customerPhone
+    };
+
+    const pickupResponse = await axios.post(
+      process.env.LEOPARD_CREATE_PICKUP_URL,
+      pickupPayload,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.LEOPARD_API_KEY}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+    return res.json({
+      success: true,
+      trackingNumber,
+      message: "Shipment and Pickup booked",
+      pickupStatus: pickupResponse.data
+    });
+
+  } catch (err) {
+    console.error("Leopard Error:", err.response?.data || err.message);
+    res.json({ success: false, message: "API request failed" });
+  }
+});
+
 
 module.exports = router;

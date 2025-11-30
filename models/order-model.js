@@ -40,10 +40,14 @@ const orderSchema = mongoose.Schema({
     type: Number,
     required: true,
   },
+  trackingNumber: { 
+    type: String, 
+    default: null,
+  },
   status: {
     type: String,
     enum: ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'],
-    default: 'confirmed',
+    default: 'pending',
   },
   phoneNumber: { type: String},
   email: { type: String},

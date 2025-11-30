@@ -23,8 +23,6 @@ app.get('/about', (req, res) => {
   res.render('about', {user: null, cart: [], req});
 });
 
-
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('views', path.join((__dirname), 'views'))
@@ -41,6 +39,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 
 app.use('/', indexRouter)
+app.use('/shipment', indexRouter);
 app.use('/orders', orderRouter)
 app.use('/seller', sellerRouter)
 
