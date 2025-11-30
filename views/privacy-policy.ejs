@@ -1,28 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Privacy Policy</title>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy</title>
+  </head>
 
-<body>
- <%- include('./partials/Header.ejs') %>
+  <body>
+    <%- include('./partials/Header.ejs') %>
 
-  <div class="flex justify-center items-center flex-col gap-4 px-10 py-6 h-[60vh]">
-    <h1 class="text-3xl text-yellow-400">Privacy Policy</h1>
-    <div class="text-xl text-black">
-        We value your privacy and are committed to protecting your personal information. Any data collected through our services will be used solely for the purposes of providing and improving the user experience, delivering requested services, and ensuring platform functionality and security.
+    <div
+      class="flex justify-center items-center flex-col gap-4 px-10 py-6 min-h-screen"
+    >
+      <h1 class="text-3xl text-yellow-400">Privacy Policy</h1>
+      <div class="md:text-xl text-black">
+        We value your privacy and are committed to protecting your personal
+        information. Any data collected through our services will be used solely
+        for the purposes of providing and improving the user experience,
+        delivering requested services, and ensuring platform functionality and
+        security.
+      </div>
+      <div class="md:text-xl text-black">
+        We do not sell or share your personal information with third parties
+        except as necessary to comply with legal obligations, enforce our
+        policies, or partner with trusted service providers who assist in our
+        operations under strict confidentiality agreements.
+      </div>
+      <div class="md:text-xl text-black">
+        For questions regarding your privacy or data handling, please
+        <a href="" class="text-black hover:text-gray-700 underline"
+          >contact us</a
+        >.
+      </div>
     </div>
-    <div class="text-xl text-black">
-        We do not sell or share your personal information with third parties except as necessary to comply with legal obligations, enforce our policies, or partner with trusted service providers who assist in our operations under strict confidentiality agreements.
-    </div>
-    <div class="text-xl text-black">
-        For questions regarding your privacy or data handling, please <a href="" class="text-black hover:text-gray-700 underline">contact us</a>.
-    </div>
-  </div>
 
-  <%- include('./partials/Footer.ejs') %>
-
-</body>
+    <%- include('./partials/Footer.ejs') %>
+  </body>
 </html>

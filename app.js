@@ -23,6 +23,16 @@ app.get('/about', (req, res) => {
   res.render('about', {user: null, cart: [], req});
 });
 
+app.get('/shipping-delivery', (req, res) => {
+  res.render('shipping-delivery', {user: null, cart: [], req});
+});
+app.get('/track-order', (req, res) => {
+  res.render('track-order', {user: null, cart: [], req});
+});
+app.get('/return-exchange', (req, res) => {
+  res.render('return-exchange', {user: null, cart: [], req});
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('views', path.join((__dirname), 'views'))
