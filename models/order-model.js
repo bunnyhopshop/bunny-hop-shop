@@ -49,7 +49,7 @@ const orderSchema = mongoose.Schema({
     enum: ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'],
     default: 'pending',
   },
-  phoneNumber: { type: String},
+  phoneNumber: { type: String, required: true},
   email: { type: String},
   createdAt: {
     type: Date,

@@ -11,75 +11,75 @@ const multer = require('multer')
 
 const upload = multer({ storage });
 
-router.get('/signup', isLoggedIn, async (req, res) => {
-    let error = req.flash('error');
-    let sellerError = req.flash('sellerError');
+// router.get('/signup', isLoggedIn, async (req, res) => {
+//     let error = req.flash('error');
+//     let sellerError = req.flash('sellerError');
 
-    // If user is not logged in
-    if (!req.user || req.user === 'unsigned') {
-        req.flash('sellerError', 'You must be logged in to become a seller');
-        return res.redirect('/access');
-    }
+//     // If user is not logged in
+//     if (!req.user || req.user === 'unsigned') {
+//         req.flash('sellerError', 'You must be logged in to become a seller');
+//         return res.redirect('/access');
+//     }
 
-    // Try to find user in DB
-    let user = await userModel.findOne({ username: req.user.username });
+//     // Try to find user in DB
+//     let user = await userModel.findOne({ username: req.user.username });
 
-    // If user not found in DB
-    if (!user) {
-        req.flash('sellerError', 'User not found');
-        return res.redirect('/access');
-    }
+//     // If user not found in DB
+//     if (!user) {
+//         req.flash('sellerError', 'User not found');
+//         return res.redirect('/access');
+//     }
 
-    res.render('sellersignup', {
-        error,
-        sellerError,
-        user: req.user,
-        req: req,
-        cart: user.cart || []
-    });
-});
+//     res.render('sellersignup', {
+//         error,
+//         sellerError,
+//         user: req.user,
+//         req: req,
+//         cart: user.cart || []
+//     });
+// });
 
-router.post('/sellersign', isLoggedIn, async (req, res) => {
-    let { email, password } = req.body;
-    let user = await userModel.findOne({ email });
+// router.post('/sellersign', isLoggedIn, async (req, res) => {
+//     let { email, password } = req.body;
+//     let user = await userModel.findOne({ email });
 
-    if (!user || user.username !== req.user.username) {
-        req.flash('sellerError', 'Please enter correct details');
-        return res.redirect('/seller/signup');
-    }
+//     if (!user || user.username !== req.user.username) {
+//         req.flash('sellerError', 'Please enter correct details');
+//         return res.redirect('/seller/signup');
+//     }
 
-    if (user.isSeller === true) {
-        req.flash('sellerError', 'You are already a seller');
-        return res.redirect('/seller/dashboard');
-    }
+//     if (user.isSeller === true) {
+//         req.flash('sellerError', 'You are already a seller');
+//         return res.redirect('/seller/dashboard');
+//     }
 
-    bcrypt.compare(password, user.password, async (err, result) => {
-        if (!result) {
-            req.flash('sellerError', 'Incorrect password');
-            return res.redirect('/seller/signup');
-        }
-
-
-        user.isSeller = true;
-        await user.save();
+//     bcrypt.compare(password, user.password, async (err, result) => {
+//         if (!result) {
+//             req.flash('sellerError', 'Incorrect password');
+//             return res.redirect('/seller/signup');
+//         }
 
 
-        let updatedToken = jwt.sign(
-            {
-                username: user.username,
-                userId: user._id,
-                isSeller: true
-            },
-            process.env.TOKEN
-        );
+//         user.isSeller = true;
+//         await user.save();
+
+
+//         let updatedToken = jwt.sign(
+//             {
+//                 username: user.username,
+//                 userId: user._id,
+//                 isSeller: true
+//             },
+//             process.env.TOKEN
+//         );
 
     
-        res.cookie('token', updatedToken);
+//         res.cookie('token', updatedToken);
 
-        req.flash('error', 'Seller account successfully created!');
-        return res.redirect('/seller/dashboard');
-    });
-});
+//         req.flash('error', 'Seller account successfully created!');
+//         return res.redirect('/seller/dashboard');
+//     });
+// });
 
 
 router.get('/dashboard', isLoggedInStrict, isSeller, async (req, res) => {

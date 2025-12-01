@@ -183,7 +183,6 @@ router.get('/clothings/:category', isLoggedIn, async (req, res) => {
     if (gender === 'boy' || gender === 'boys') query.gender = 'boy';
     if (gender === 'girl' || gender === 'girls') query.gender = 'girl';
 
-
     if (searchTerm) {
         const selectedProducts = await productsModel.find({
             title: { $regex: searchTerm, $options: 'i' }
@@ -209,7 +208,6 @@ router.get('/clothings/:category', isLoggedIn, async (req, res) => {
         cart = dbUser.cart || [];
     }
 
-   console.log(query)
     const selectedProducts = await productsModel.find(query);
 
     return res.render('categorized', {

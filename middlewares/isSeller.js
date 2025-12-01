@@ -11,13 +11,13 @@ async function isSeller(req, res, next) {
                 return next()
             }
             else {
-                req.flash('sellerError', 'Please create a seller account to sell products')
-                return res.redirect('/seller/signup')
+                req.flash('sellerError', 'You are not authorized')
+                return res.redirect('/')
             }
 
         } catch (error) {
             req.flash('sellerError', 'something went wrong')
-            res.redirect('/seller/signup')
+            return res.redirect('/')
         }
 
     }

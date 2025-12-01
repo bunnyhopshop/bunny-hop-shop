@@ -27,4 +27,25 @@ router.post('/cancel/:id', isLoggedInStrict, async (req, res) => {
         console.log(error)
     }
 })
+
+router.get("/all", isLoggedInStrict, isSeller,async (req,res) => {
+    const orders = await orderModel.find().populate("items.productId")
+    console.log(orders)
+    const user = await userModel.findOne({username: req.user.username})
+    try {
+        return res.render("all-orders", {user: req.user, orders, cart: user.cart})
+    } catch (error) {
+        res.redirect("/seller/dashboard")
+    }
+} )
+router.post('/admin/cancel/:id', isLoggedIn, isSeller, async (req, res) => {
+  try {
+    await orderModel.findOneAndDelete({_id: req.params.id})
+    res.redirect('/orders/all');
+  } catch (err) {
+    console.error(err);
+    res.redirect('/orders/all');
+  }
+});
+
 module.exports = router
