@@ -421,7 +421,7 @@ router.post('/checkout', isLoggedInStrict, async (req,res) => {
                     zip
                 },
                 items: orderItems,
-                totalPrice: Number(totalPrice) + 5,
+                totalPrice: Number(totalPrice) + 250,
                 status: 'confirmed',
                 userId: req.user.userId
             })
