@@ -1,4 +1,5 @@
 <%- include('./partials/Header.ejs', {hidden: true}) %>
+<div id="guestCart"></div>
 <% if(error && error.length > 0) { %>
   <div class="flash fixed inset-0 flex z-50 justify-center items-center ">
     <p class="text-red-600 rounded py-1 px-4 h-fit w-fit bg-gray-200 text-lg md:text-2xl lg:text-2xl"><%= error[0] %></p>
@@ -9,7 +10,7 @@
     <h1 class="text-2xl font-bold text-gray-800 text-center">Shopping Cart</h1>
     <div class="grid md:grid-cols-3 gap-8 mt-12">
       <% if (cart.length === 0) { %>
-        <div class="md:col-span-3 flex flex-col items-center justify-center h-[60vh] space-y-4">
+<div id="emptyCartBlock" class="md:col-span-3 flex flex-col items-center justify-center h-[60vh] space-y-4">
           <p class="text-gray-600 text-lg">Your cart is currently empty:(</p>
           <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
           <dotlottie-player src="https://lottie.host/2d6c4f0e-5635-486c-b693-c4356c8238de/vXf432q1q3.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
@@ -24,12 +25,23 @@
             <div class="grid scroll-card grid-cols-3 items-start gap-4">
               <div class="col-span-2 flex items-start gap-4">
                 <div class="w-36 h-36 max-sm:w-20 max-sm:h-20 shrink-0 bg-gray-100 p-1 rounded-sm">
-                  <img src='<%= product.productId.mainImage %>' class="w-full h-full object-contain" />
+                  <img src='<% if (user !== "unsigned") { %>
+  <%= product.productId.mainImage %>
+<% } else { %>
+  <%= product.image %>
+<% } %>'
+ class="w-full h-full object-contain" />
                 </div>
                 <div>
-                  <h3 class="text-base font-bold text-gray-800"><%= product.productId.title %></h3>
-                  <p class="text-xs font-semibold text-gray-500 mt-0.5"><%= product.productId.size %></p>
-                  <button onclick="window.location.href='/remove-from-cart/<%= product.productId._id %>'" type="button" class="mt-4 font-semibold text-red-500 text-xs flex items-center gap-1 shrink-0">
+                  <h3 class="text-base font-bold text-gray-800">
+                    <% if (user !== "unsigned") { %>
+   <%= product.productId.title %>
+<% } else { %>
+  <%= product.title %>
+<% } %>
+                   </h3>
+                  <button   onclick="window.location.href='/remove-from-cart/<%= user !== 'unsigned' ? product.productId._id : product.productId %>'"
+  type="button" type="button" class="mt-4 font-semibold text-red-500 text-xs flex items-center gap-1 shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 fill-current inline" viewBox="0 0 24 24">
                       <path d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z" data-original="#000000"></path>
                       <path d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z" data-original="#000000"></path>
@@ -39,20 +51,20 @@
                 </div>
               </div>
               <div class="ml-auto">
-                <h4 class="text-lg font-bold text-gray-800">PKR <%= product.productId.price %></h4>
+                <h4 class="text-lg font-bold text-gray-800">PKR <%= user !== "unsigned" ? product.productId.price : product.price %></h4>
                 <button type="button" class="mt-4 flex items-center px-3 py-1.5 border border-gray-300 text-gray-800 text-xs outline-none bg-transparent rounded-sm minus">
-                  <svg onclick="window.location.href='sub-quantity/<%= product._id %>'" xmlns="http://www.w3.org/2000/svg" class="w-2.5 fill-current" viewBox="0 0 124 124">
+                  <svg onclick="window.location.href='sub-quantity/<%= user !== 'unsigned' ? product.productId._id : product.productId %>'" xmlns="http://www.w3.org/2000/svg" class="w-2.5 fill-current" viewBox="0 0 124 124">
                     <path d="M112 50H12C5.4 50 0 55.4 0 62s5.4 12 12 12h100c6.6 0 12-5.4 12-12s-5.4-12-12-12z" data-original="#000000"></path>
                   </svg>
                   <span class="mx-3 font-bold"><%= product.quantity %></span>
-                  <svg onclick="window.location.href='/add-quantity/<%= product._id %>'" xmlns="http://www.w3.org/2000/svg" class="w-2.5 fill-current plus" viewBox="0 0 42 42">
+                  <svg onclick="window.location.href='/add-quantity/<%= user !== 'unsigned' ? product.productId._id : product.productId %>'" xmlns="http://www.w3.org/2000/svg" class="w-2.5 fill-current plus" viewBox="0 0 42 42">
                     <path d="M37.059 16H26V4.941C26 2.224 23.718 0 21 0s-5 2.224-5 4.941V16H4.941C2.224 16 0 18.282 0 21s2.224 5 4.941 5H16v11.059C16 39.776 18.282 42 21 42s5-2.224 5-4.941V26h11.059C39.776 26 42 23.718 42 21s-2.224-5-4.941-5z" data-original="#000000"></path>
                   </svg>
                 </button>
               </div>
             </div>
             <hr class="border-gray-300" />
-            <% let productTotal = product.productId.price * product.quantity %>
+            <% let productTotal = user !== "unsigned" ?  product.productId.price * product.quantity : product.price * product.quantity %>
             <% price += productTotal %>
           <% }) %>
         </div>
@@ -103,23 +115,65 @@
                 </div>
               </div>
             </div>
-            <ul class="text-gray-800 mt-4 space-y-2">
-              <li class="flex flex-wrap gap-4 text-sm">Subtotal <span class="ml-auto font-bold">PKR <%=price.toFixed(2)%></span></li>
-              <li class="flex flex-wrap gap-4 text-sm">Shipping <span class="ml-auto font-bold">PKR 250.00</span></li>
-              <hr class="border-gray-300" />
-              <li class="flex flex-wrap gap-4 text-sm font-bold">Total <span class="ml-auto">PKR <%=(price + 5).toFixed(2) %></span></li>
-            </ul>
+<ul class="text-gray-800 mt-4 space-y-2">
+  <li class="flex flex-wrap gap-4 text-sm">
+    Subtotal <span class="ml-auto font-bold">PKR <%=price.toFixed(2)%></span>
+  </li>
+  <li class="flex flex-wrap gap-4 text-sm">
+    Shipping <span class="ml-auto font-bold">PKR 250.00</span>
+  </li>
+
+  <% 
+    let discountedTotal = 0;
+    let hasDiscount = false;
+    cart.forEach((product) => { 
+      if (product.discountInfo && product.discountInfo.percent > 0) {
+        discountedTotal += product.discountInfo.finalPrice * product.quantity;
+        hasDiscount = true;
+  %>
+        <li class="flex flex-wrap gap-4 text-sm text-green-600">
+          Discount on <%= user !== "unsigned" ? product.productId.title : product.title %> 
+          <span class="ml-auto font-bold">
+            <%= product.discountInfo.percent %>% off until 
+            <%= new Date(product.discountInfo.endDate).toLocaleDateString("en-IN", {
+              day: "numeric",
+              month: "short",
+              year: "numeric"
+            }) %>
+          </span>
+        </li>
+  <% 
+      } else {
+        discountedTotal += (user !== "unsigned" ? product.productId.price : product.price) * product.quantity;
+        
+      }
+    }); 
+  %>
+
+  <!-- ✅ Show total discounted price -->
+ <% if (hasDiscount) { %>
+  <li class="flex flex-wrap gap-4 text-sm text-blue-600 font-bold">
+    Discounted Total <span class="ml-auto">PKR <%= (discountedTotal + 250).toFixed(2) %></span>
+  </li>
+<% } %>
+  <hr class="border-gray-300" />
+  <li class="flex flex-wrap gap-4 text-sm font-bold">
+    Total <span class="ml-auto">PKR <%= (discountedTotal + 250).toFixed(2) %></span>
+  </li>
+</ul>
+
             <div class="mt-4 space-y-2">
               <button type="submit" class="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-gray-800 hover:bg-gray-900 text-white rounded-sm">Checkout</button>
               <button type="button" class="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-transparent text-gray-800 border border-gray-300 rounded-sm">Continue Shopping</button>
             </div>
             <input required name="cart" value="cart" type="text" class="hidden" placeholder="">
-            <input required name="totalPrice" value="<%=price%>" type="text" class="hidden" placeholder="">
+            <input required name="totalPrice" value="<%=(discountedTotal + 250).toFixed(2)%>" type="text" class="hidden" placeholder="">
           </form>
         </div>
       <% } %>
     </div>
   </div>
 </div>
+
 
 <%- include('./partials/Footer.ejs') %>

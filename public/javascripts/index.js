@@ -196,26 +196,70 @@ function scrollCard() {
 function addToCart() {
   const addBtn = document.querySelectorAll('.add-btn');
   const quantity = document.querySelector('.quantity');
-  const icon = document.querySelector('.c-icon')
-  addBtn.forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      let id = btn.getAttribute('data-fitId')
-      fetch(`/add-to-cart/${id}`, {
-        method: 'POST'
-      }).then((response) => response.json())
-      .then((data => {
-        if (data.redirect) {
-          window.location.href = '/access'
 
-        } else{
-        btn.innerHTML = `<i class="ri-check-line"></i> Added to cart`
-        quantity.textContent = data.cart.length
-        }
-       
-      })).catch((error) => console.log(error))
-    })
-  })
+  addBtn.forEach((btn) => {
+    btn.addEventListener('click', async () => {
+
+      const id = btn.getAttribute('data-fitId');
+
+      try {
+        const res = await fetch(`/add-to-cart/${id}`, { method: 'POST' });
+        const data = await res.json();
+
+        btn.innerHTML = `<i class="ri-check-line"></i> Added to cart`;
+        quantity.textContent = data.cart.length;
+
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  });
 }
+
+
+
+async function addToCookieCart(productId, btn, quantityElement) {
+
+  const res = await fetch(`/product-json/${productId}`);
+  const product = await res.json();
+
+  let cart = [];
+
+  const cookieValue = document.cookie
+    .split("; ")
+    .find(row => row.startsWith("guestCart="));
+
+  if (cookieValue) {
+    try {
+      cart = JSON.parse(decodeURIComponent(cookieValue.split("=")[1]));
+    } catch (e) {
+      cart = [];
+    }
+  }
+
+  const existing = cart.find(item => item.id === productId);
+
+  if (existing) {
+    existing.quantity += 1;
+  } else {
+    cart.push({
+      id: productId,
+      title: product.title,
+      quantity: 1,
+      price: product.finalPrice ?? product.price,
+      image: product.image
+    });
+  }
+
+  // write updated cart back to persistent cookie (7 days expiry)
+  document.cookie = `guestCart=${encodeURIComponent(JSON.stringify(cart))}; path=/; max-age=${7 * 24 * 60 * 60}`;
+
+  // UI update
+  btn.innerHTML = `<i class="ri-check-line"></i> Added to cart`;
+  quantityElement.textContent = cart.length;
+}
+
+
 function showCancelPopup(orderId) {
   document.getElementById('cancelOrderPopup').classList.remove('hidden');
   document.getElementById('confirmCancelButton').setAttribute('onclick', `cancelOrder('${orderId}')`);

@@ -15,12 +15,11 @@ const multer = require('multer');
 const { default: storage } = require('../cloudinary');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
-
-
 const saleModel = require('../models/sale-model');
-//  6793825ad13524b2074427dcf16814bd6c4feff9
-
+const sendEmail = require('../utils/sendEmail');
 const upload = multer({ storage });
+const {getDiscountForProduct} = require("../utils/discount")
+const {orderEmailTemplate} = require("../helper/orderEmailTemplate")
 
 router.get('/', isLoggedIn, async function (req, res) {
     let error = req.flash('error');
@@ -141,7 +140,7 @@ router.post('/forgot-password', async (req, res) => {
 
     const resetLink = `http://localhost:3000/reset-password/${token}`;
 
-    // Nodemailer
+
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -151,7 +150,7 @@ router.post('/forgot-password', async (req, res) => {
     });
 
     await transporter.sendMail({
-        from: 'Your App',
+        from: 'Bunny Hop Shop',
         to: email,
         subject: 'Reset Password',
         html: `
@@ -361,6 +360,7 @@ router.get('/clothings/:category', isLoggedIn, async (req, res) => {
 });
 
 
+
 // router.get('/clothings/:category', async (req, res) => {
 //     let category = req.params.category.toLowerCase();
 
@@ -425,43 +425,140 @@ router.get('/login', redirectIfLogin, (req, res) => {
     res.render('login', { loginError })
 })
 router.post('/add-to-cart/:id', isLoggedIn, async (req, res) => {
-    if (!req.user) {
-      req.flash('sellerError', 'you need an account to use the cart');
-      return res.status(401).json({ redirect: '/access' });
+    console.log(req.user)
+
+    if (!req.user || req.user === "unsigned") {
+        console.log("not logged in")
+        let cart = [];
+
+        try {
+            cart = JSON.parse(req.cookies.guestCart || "[]");
+        } catch (e) {
+            cart = [];
+        }
+
+        const productId = req.params.id;
+
+
+        const existing = cart.find(item => item.productId === productId);
+
+        if (existing) {
+            existing.quantity += 1;
+        } else {
+
+            const product = await productsModel.findById(productId);
+            cart.push({
+                productId,
+                title: product.title,
+                quantity: 1,
+                price: product.price,
+                image: product.mainImage
+            });
+        }
+
+
+        res.cookie("guestCart", JSON.stringify(cart), {
+            httpOnly: false,
+            maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
+            secure: false
+        });
+
+        return res.status(200).json({ guest: true, cart });
     }
-  
-    const productId = req.params.id;
-    let user = await userModel.findOne({ username: req.user.username });
-    let product = await productsModel.findOne({ _id: productId });
-  
-    const productInCart = user.cart.find(item => item.productId.toString() === productId);
-  
-    if (productInCart) {
-      productInCart.quantity = productInCart.quantity ? productInCart.quantity + 1 : 1; 
+    console.log("here")
+
+    const user = await userModel.findOne({ username: req.user.username });
+
+    const existing = user.cart.find(
+        item => item.productId.toString() === req.params.id
+    );
+
+    if (existing) {
+        existing.quantity += 1;
     } else {
-      user.cart.push({ productId: product._id, quantity: 1 });
-    }
-  
-    try {
-      await user.save();
-      res.json({ message: 'Product quantity updated successfully', cart: user.cart });
-    } catch (error) {
-      console.log(error);
-    }
-});
-  
-router.get('/cart', isLoggedInStrict, async (req, res) => {
-    let error = req.flash('error')
-    let user = await userModel.findOne({ username: req.user.username }).populate({ path: 'cart.productId' })
-    try {
-        res.render('cart', { user: req.user, cart: user.cart, error })
-    } catch (error) {
-        console.log(error)
+        user.cart.push({
+            productId: req.params.id,
+            quantity: 1
+        });
     }
 
-})
-router.get('/remove-from-cart/:id', isLoggedInStrict, async (req, res) => {
+    await user.save();
+
+    res.json({ guest: false, cart: user.cart });
+});
+
+  
+router.get('/cart', isLoggedIn, async (req, res) => {
+
+    let error = req.flash('error');
+
+
+    if (!req.user || req.user === "unsigned") {
+
+        let guestCart = [];
+        try {
+            guestCart = JSON.parse(req.cookies.guestCart || "[]");
+        } catch (e) {
+            guestCart = [];
+        }
+        // console.log(guestCart)
+        for (let item of guestCart) {
+            item.discountInfo = await getDiscountForProduct(item.productId);
+        }
+        console.log(guestCart)
+        return res.render('cart', {
+            user: "unsigned",
+            cart: guestCart,
+            guest: true,
+            error
+        });
+    }
+
+    let user = await userModel
+        .findOne({ username: req.user.username })
+        .populate({ path: 'cart.productId' });
+            for (let item of user.cart) {
+        item.discountInfo = await getDiscountForProduct(item.productId._id);
+    }
+    console.log(user.cart)
+    res.render('cart', {
+        user: req.user,
+        cart: user.cart,
+        guest: false,
+        error
+    });
+});
+
+
+router.get('/product-json/:id', async (req, res) => {
+  const product = await productsModel.findById(req.params.id);
+
+  const disc = await getDiscountForProduct(product._id);
+
+  res.json({
+    _id: product._id,
+    title: product.title,
+    price: product.price,
+    image: product.mainImage,
+    finalPrice: disc ? disc.finalPrice : product.price
+  });
+});
+
+
+router.get('/remove-from-cart/:id', isLoggedIn, async (req, res) => {
     let user = await userModel.findOne({ username: req.user.username })
+           if (!user) {
+        try {
+            guestCart = JSON.parse(req.cookies.guestCart || "[]");
+        } catch (e) {
+            guestCart = [];
+        }
+     guestCart = guestCart.filter(p => p.productId !== req.params.id)
+
+    res.cookie("guestCart", JSON.stringify(guestCart), { httpOnly: true });
+    return res.redirect('/cart')
+
+    }
     await user.updateOne({ $pull: { cart: { productId: req.params.id } } })
     try {
         res.redirect('/cart')
@@ -471,6 +568,25 @@ router.get('/remove-from-cart/:id', isLoggedInStrict, async (req, res) => {
 })
 router.get('/sub-quantity/:id', isLoggedIn, async (req, res) => {
     let user = await userModel.findOne({ username: req.user.username })
+        if (!user) {
+        try {
+            guestCart = JSON.parse(req.cookies.guestCart || "[]");
+        } catch (e) {
+            guestCart = [];
+        }
+    const product = guestCart.find(p => p.productId === req.params.id)
+
+    if(product && product.quantity > 1) {
+        product.quantity -= 1
+    } else{
+        product.quantity = 1
+        req.flash('error', 'cannot order more than 500 products')
+        return res.redirect('/cart')
+    }
+    res.cookie("guestCart", JSON.stringify(guestCart), { httpOnly: true });
+    return res.redirect('/cart')
+
+    }
     let product = user.cart.find(product => product._id == req.params.id)
     if(product && product.quantity > 1) {
         product.quantity -= 1
@@ -489,6 +605,25 @@ router.get('/sub-quantity/:id', isLoggedIn, async (req, res) => {
 })
 router.get('/add-quantity/:id', isLoggedIn, async (req, res) => {
     let user = await userModel.findOne({ username: req.user.username })
+    if (!user) {
+        try {
+            guestCart = JSON.parse(req.cookies.guestCart || "[]");
+        } catch (e) {
+            guestCart = [];
+        }
+    const product = guestCart.find(p => p.productId === req.params.id)
+
+    if(product && product.quantity < 500) {
+        product.quantity += 1
+    } else{
+        product.quantity = 500
+        req.flash('error', 'cannot order more than 500 products')
+        return res.redirect('/cart')
+    }
+    res.cookie("guestCart", JSON.stringify(guestCart), { httpOnly: true });
+    return res.redirect('/cart')
+
+    }
     let product = user.cart.find(product => product._id == req.params.id)
     if(product && product.quantity < 100) {
         product.quantity += 1
@@ -505,78 +640,217 @@ router.get('/add-quantity/:id', isLoggedIn, async (req, res) => {
     }
 
 })
-router.get('/checkout/:id', isLoggedInStrict, async (req, res) => {
+router.get('/checkout/:id', isLoggedIn, async (req, res) => {
     let user = await userModel.findOne({ username: req.user.username })
     let product = await productModel.findOne({ _id: req.params.id })
-    res.render('checkout', {user: req.user, cart: user.cart, product, req: req})
+    let discountInfo = await getDiscountForProduct(product._id)
+    product.discountInfo = discountInfo
+
+    res.render('checkout', {user: req.user, cart: user?.cart || [], product, req: req})
 })
-router.post('/checkout', isLoggedInStrict, async (req,res) => {
-    let {fullName, lastName,street, city, state, zip, phoneNumber, totalPrice, email} = req.body
-    let user = await userModel.findOne({ username: req.user.username })
-    if(req.body.single){
-        let product = await productModel.findOne({_id: req.body.productId})
-        try {
-            let order = await orderModel.create({
-                fullName,
-                lastName,
-                shippingAddress : {
-                    street,
-                    city,
-                    state,
-                    zip
-                },
-                items: {productId: product._id},
-                totalPrice: product.price,
-                status: 'confirmed',
-                userId: req.user.userId
+// router.post('/checkout', isLoggedInStrict, async (req,res) => {
+//     let {fullName, lastName,street, city, state, zip, phoneNumber, totalPrice, email} = req.body
+//     let user = await userModel.findOne({ username: req.user.username })
+//     if(req.body.single){
+//         let product = await productModel.findOne({_id: req.body.productId})
+//         try {
+//             let order = await orderModel.create({
+//                 fullName,
+//                 lastName,
+//                 shippingAddress : {
+//                     street,
+//                     city,
+//                     state,
+//                     zip
+//                 },
+//                 items: {productId: product._id},
+//                 totalPrice: product.price,
+//                 status: 'confirmed',
+//                 userId: req.user.userId
             
-            }) 
-            req.session.checkoutDone = 'true'
-            user.orders.push(order)
-            await user.save()
-            return res.redirect('/success-checkout')
-        } catch (error) {
-            console.log(error)
-        }
-    }
-    if(req.body.cart){
-        let cart = user.cart
-       let orderItems = []
-       cart.forEach((item) => {
+//             }) 
+//             req.session.checkoutDone = 'true'
+//             user.orders.push(order)
+//             await user.save()
+//             return res.redirect('/success-checkout')
+//         } catch (error) {
+//             console.log(error)
+//         }
+//     }
+//     if(req.body.cart){
+//         let cart = user.cart
+//        let orderItems = []
+//        cart.forEach((item) => {
+//         orderItems.push({
+//             productId: item.productId,
+//             quantity: item.quantity
+//         })
+//        })
+//         try {
+//             let order = await orderModel.create({
+//                 fullName,
+//                 email,
+//                 phoneNumber,
+//                 shippingAddress : {
+//                     street,
+//                     city,
+//                     state,
+//                     zip
+//                 },
+//                 items: orderItems,
+//                 totalPrice: Number(totalPrice) + 250,
+//                 status: 'confirmed',
+//                 userId: req.user.userId
+//             })
+//             req.session.checkoutDone = 'true'
+//             user.orders.push(order)
+//             user.cart = []
+//             await user.save()
+//             return res.redirect('/success-checkout')
+//         } catch (error) {
+//             console.log(error)
+//         }
+//     }
+// })
+router.post('/checkout', isLoggedIn, async (req, res) => {
+  try {
+    let {
+      fullName,
+      lastName,
+      street,
+      city,
+      state,
+      zip,
+      phoneNumber,
+      email,
+      totalPrice,
+      single,
+      productId,
+      quantity
+    } = req.body;
+
+    const isGuest = req.user === "unsigned";
+
+
+    if (isGuest) {
+      let orderItems = [];
+
+      if (single === "true") {
         orderItems.push({
+          productId,
+          quantity: quantity || 1
+        });
+      } else {
+
+        let guestCart = [];
+        try {
+          guestCart = JSON.parse(req.cookies.guestCart || "[]");
+        } catch (e) {
+          guestCart = [];
+        }
+
+        guestCart.forEach(item => {
+          orderItems.push({
             productId: item.productId,
             quantity: item.quantity
-        })
-       })
-        try {
-            let order = await orderModel.create({
-                fullName,
-                email,
-                phoneNumber,
-                shippingAddress : {
-                    street,
-                    city,
-                    state,
-                    zip
-                },
-                items: orderItems,
-                totalPrice: Number(totalPrice) + 250,
-                status: 'confirmed',
-                userId: req.user.userId
-            })
-            req.session.checkoutDone = 'true'
-            user.orders.push(order)
-            user.cart = []
-            await user.save()
-            return res.redirect('/success-checkout')
-        } catch (error) {
-            console.log(error)
-        }
+          });
+        });
+      }
+
+      const order = await orderModel.create({
+        fullName,
+        lastName,
+        phoneNumber,
+        email,
+        shippingAddress: { street, city, state, zip },
+        items: orderItems,
+        totalPrice: Number(totalPrice),   
+        status: "confirmed",
+        userId: null,
+        isGuest: true
+      });
+
+      await order.populate({ path: "items.productId" });
+
+      await sendEmail({
+        to: email,
+        subject: "Your Bunny Hop Shop Order Confirmation",
+        html: orderEmailTemplate(order)
+      });
+
+      res.clearCookie("guestCart"); 
+      req.session.checkoutDone = "true";
+      return res.redirect("/success-checkout");
     }
-})
-router.get('/success-checkout', isLoggedInStrict, checkoutCheckout, async (req, res) => {
+
+
+    let user = await userModel.findOne({ username: req.user.username });
+
+    if (single === "true") {
+
+      let order = await orderModel.create({
+        fullName,
+        lastName,
+        shippingAddress: { street, city, state, zip },
+        items: [{ productId, quantity: quantity || 1 }],
+        totalPrice: Number(totalPrice),   
+        status: "confirmed",
+        userId: req.user.userId
+      });
+
+      user.orders.push(order);
+      await user.save();
+
+      await sendEmail({
+        to: user.email,
+        subject: "Your Bunny Hop Shop Order Confirmation",
+        html: orderEmailTemplate(order)
+      });
+
+      req.session.checkoutDone = "true";
+      return res.redirect("/success-checkout");
+    }
+
+    
+    let orderItems = user.cart.map(i => ({
+      productId: i.productId,
+      quantity: i.quantity
+    }));
+
+    let order = await orderModel.create({
+      fullName,
+      email,
+      phoneNumber,
+      shippingAddress: { street, city, state, zip },
+      items: orderItems,
+      totalPrice: Number(totalPrice), 
+      status: "confirmed",
+      userId: req.user.userId
+    });
+
+    user.orders.push(order);
+    user.cart = []; 
+    await user.save();
+
+    await sendEmail({
+      to: user.email,
+      subject: "Your Bunny Hop Shop Order Confirmation",
+      html: orderEmailTemplate(order)
+    });
+
+    req.session.checkoutDone = "true";
+    return res.redirect("/success-checkout");
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Checkout failed");
+  }
+});
+
+
+router.get('/success-checkout', isLoggedIn, checkoutCheckout, async (req, res) => {
     let user = await userModel.findOne({ username: req.user.username })
-    let cart = user.cart
+    let cart = user?.cart || []
     res.render('success-checkout', {user: req.user, cart, req: req})
 })
 
@@ -695,6 +969,7 @@ router.post("/seller/update/:id", upload.array("images", 5), async (req, res) =>
 
     res.redirect("/seller/dashboard");
 });
+
 
 
 module.exports = router;
