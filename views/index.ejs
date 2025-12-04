@@ -30,7 +30,7 @@
           alt=""
         />
         <img
-          class="w-fit h-[30vh] md:h-[90vh] top-full -translate-y-1/4 max-sm:left-[18%] sm:left-[40%] xl:left-[45%] glam object-contain absolute opacity-1"
+          class="w-fit h-[30vh] md:h-[90vh] top-full -translate-y-[50vh] max-sm:left-[18%] sm:left-[40%] xl:left-[45%] glam object-contain absolute opacity-1"
           src="/media/product1.png"
           alt=""
         />
@@ -106,11 +106,15 @@
               />
               
             </div>
-            <% if (product.sale) { %>
+            <!-- <% if (product.sale) { %>
               <div class="flex justify-center items-center bg-slate-500 text-white text-xs text-center absolute rounded-full top-0 h-12 w-12 z-50">
                 <%= product.sale %>% <br> OFF
               </div>
-            <% } %>
+            <% } %> -->
+
+            <div class="flex justify-center items-center bg-slate-500 text-white text-xs text-center absolute rounded-full top-0 h-12 w-12 z-50">
+               15% <br> OFF
+              </div>
             
             <div
               class=" z-50 min-h-10 w-full bg-white flex xl:itmes-start max-md:items-center 2xl:items-center justify-center"
