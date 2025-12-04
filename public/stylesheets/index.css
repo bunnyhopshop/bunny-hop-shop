@@ -358,5 +358,15 @@ color: #DE5D83;
   }
   .roboto{
     font-family: 'mono' !important;
+
   }
+
+@media screen and (max-width: 360px) {
+  .glam{
+    left: 65% !important;
+    top: 0;
+    max-width: 100% !important;
+  }
+}
+
   

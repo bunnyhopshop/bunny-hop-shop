@@ -156,7 +156,7 @@ scrollCard()
        if (window.innerWidth <= 768) {
         gsap.to('.glam', {
         duration: .5,
-        y: -100,
+        y: -150,
       })
       } else{
         gsap.to('.glam', {

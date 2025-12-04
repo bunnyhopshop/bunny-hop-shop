@@ -932,6 +932,8 @@ router.post('/checkout', isLoggedIn, async (req, res) => {
         userId: req.user.userId
       });
 
+await order.populate({ path: "items.productId" });
+
       user.orders.push(order);
       await user.save();
 
@@ -962,6 +964,8 @@ router.post('/checkout', isLoggedIn, async (req, res) => {
       userId: req.user.userId
     });
 
+await order.populate({ path: "items.productId" });
+
     user.orders.push(order);
     user.cart = []; 
     await user.save();
@@ -977,6 +981,7 @@ router.post('/checkout', isLoggedIn, async (req, res) => {
 
   } catch (error) {
     console.log(error);
+    req.flash("error", "Error in Checkout")
     res.status(500).send("Checkout failed");
   }
 });
