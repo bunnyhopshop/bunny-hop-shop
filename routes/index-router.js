@@ -903,198 +903,198 @@ router.get('/order/:id', async (req, res) => {
   }
 });
 
-router.post('/checkout', isLoggedIn, async (req, res) => {
-  try {
-    let {
-      fullName,
-      lastName,
-      street,
-      city,
-      state,
-      zip,
-      phoneNumber,
-      email,
-      totalPrice,
-      single,
-      productId,
-      quantity
-    } = req.body;
+// router.post('/checkout', isLoggedIn, async (req, res) => {
+//   try {
+//     let {
+//       fullName,
+//       lastName,
+//       street,
+//       city,
+//       state,
+//       zip,
+//       phoneNumber,
+//       email,
+//       totalPrice,
+//       single,
+//       productId,
+//       quantity
+//     } = req.body;
 
-    const isGuest = req.user === "unsigned";
-    const adminEmail = process.env.ADMIN_EMAIL 
+//     const isGuest = req.user === "unsigned";
+//     const adminEmail = process.env.ADMIN_EMAIL 
 
-    if (isGuest) {
-      let orderItems = [];
+//     if (isGuest) {
+//       let orderItems = [];
 
-      if (single === "true") {
-        orderItems.push({ productId, quantity: quantity || 1 });
-      } else {
-        let guestCart = [];
-        try {
-          guestCart = JSON.parse(req.cookies.guestCart || "[]");
-        } catch (e) {
-          guestCart = [];
-        }
-        guestCart.forEach(item => {
-          orderItems.push({ productId: item.productId, quantity: item.quantity });
-        });
-      }
+//       if (single === "true") {
+//         orderItems.push({ productId, quantity: quantity || 1 });
+//       } else {
+//         let guestCart = [];
+//         try {
+//           guestCart = JSON.parse(req.cookies.guestCart || "[]");
+//         } catch (e) {
+//           guestCart = [];
+//         }
+//         guestCart.forEach(item => {
+//           orderItems.push({ productId: item.productId, quantity: item.quantity });
+//         });
+//       }
 
-      const order = await orderModel.create({
-        fullName,
-        lastName,
-        phoneNumber,
-        email,
-        shippingAddress: { street, city, state, zip },
-        items: orderItems,
-        totalPrice: Number(totalPrice),
-        status: "confirmed",
-        userId: null,
-        isGuest: true
-      });
+//       const order = await orderModel.create({
+//         fullName,
+//         lastName,
+//         phoneNumber,
+//         email,
+//         shippingAddress: { street, city, state, zip },
+//         items: orderItems,
+//         totalPrice: Number(totalPrice),
+//         status: "confirmed",
+//         userId: null,
+//         isGuest: true
+//       });
 
-      await order.populate({ path: "items.productId" });
+//       await order.populate({ path: "items.productId" });
 
-      await sendEmail({
-        to: email,
-        subject: "Your Bunny Hop Shop Order Confirmation",
-        html: orderEmailTemplate(order)
-      });
+//       await sendEmail({
+//         to: email,
+//         subject: "Your Bunny Hop Shop Order Confirmation",
+//         html: orderEmailTemplate(order)
+//       });
 
 
-await sendEmail({
-  to: adminEmail,
-  subject: "New Order Received",
-  html: `<h2>New Order Alert</h2>
-         <p>Order ID: ${order._id}</p>
-         <p>Customer: ${order.fullName}</p>
-         <p>Total: PKR.${order.totalPrice}</p>
-         <p>Items: ${order.items.map(i => i.productId.title + " x" + i.quantity).join(", ")}</p>
-         <p>
-           <a href="${process.env.FRONTEND_URL}/order/${order._id}" 
-              style="display:inline-block;padding:10px 15px;background:#007bff;color:#fff;text-decoration:none;border-radius:5px;">
-              View Order Receipt
-           </a>
-         </p>
-         <p>
-           Or see all orders here: 
-           <a href="${process.env.FRONTEND_URL}/orders/all">Orders Dashboard</a>
-         </p>`
-});
+// await sendEmail({
+//   to: adminEmail,
+//   subject: "New Order Received",
+//   html: `<h2>New Order Alert</h2>
+//          <p>Order ID: ${order._id}</p>
+//          <p>Customer: ${order.fullName}</p>
+//          <p>Total: PKR.${order.totalPrice}</p>
+//          <p>Items: ${order.items.map(i => i.productId.title + " x" + i.quantity).join(", ")}</p>
+//          <p>
+//            <a href="${process.env.FRONTEND_URL}/order/${order._id}" 
+//               style="display:inline-block;padding:10px 15px;background:#007bff;color:#fff;text-decoration:none;border-radius:5px;">
+//               View Order Receipt
+//            </a>
+//          </p>
+//          <p>
+//            Or see all orders here: 
+//            <a href="${process.env.FRONTEND_URL}/orders/all">Orders Dashboard</a>
+//          </p>`
+// });
 
-      res.clearCookie("guestCart");
-      req.session.checkoutDone = "true";
-      return res.redirect(`/order/${order._id}`);
-    }
+//       res.clearCookie("guestCart");
+//       req.session.checkoutDone = "true";
+//       return res.redirect(`/order/${order._id}`);
+//     }
 
-    let user = await userModel.findOne({ username: req.user.username });
+//     let user = await userModel.findOne({ username: req.user.username });
 
-    if (single === "true") {
-      let order = await orderModel.create({
-        fullName,
-        lastName,
-        phoneNumber,
-        shippingAddress: { street, city, state, zip },
-        items: [{ productId, quantity: quantity || 1 }],
-        totalPrice: Number(totalPrice),
-        status: "confirmed",
-        userId: req.user.userId
-      });
+//     if (single === "true") {
+//       let order = await orderModel.create({
+//         fullName,
+//         lastName,
+//         phoneNumber,
+//         shippingAddress: { street, city, state, zip },
+//         items: [{ productId, quantity: quantity || 1 }],
+//         totalPrice: Number(totalPrice),
+//         status: "confirmed",
+//         userId: req.user.userId
+//       });
 
-      await order.populate({ path: "items.productId" });
+//       await order.populate({ path: "items.productId" });
 
-      user.orders.push(order);
-      await user.save();
+//       user.orders.push(order);
+//       await user.save();
 
   
-      await sendEmail({
-        to: user.email,
-        subject: "Your Bunny Hop Shop Order Confirmation",
-        html: orderEmailTemplate(order)
-      });
-      console.log(order)
-await sendEmail({
-  to: adminEmail,
-  subject: "New Order Received",
-  html: `<h2>New Order Alert</h2>
-         <p>Order ID: ${order._id}</p>
-         <p>Customer: ${order.fullName}</p>
-         <p>Total: PKR.${order.totalPrice}</p>
-         <p>Items: ${order.items.map(i => i.productId.title + " x" + i.quantity).join(", ")}</p>
-         <p>
-           <a href="${process.env.FRONTEND_URL}/order/${order._id}" 
-              style="display:inline-block;padding:10px 15px;background:#007bff;color:#fff;text-decoration:none;border-radius:5px;">
-              View Order Receipt
-           </a>
-         </p>
-         <p>
-           Or see all orders here: 
-           <a href="${process.env.FRONTEND_URL}/orders/all">Orders Dashboard</a>
-         </p>`
-});
+//       await sendEmail({
+//         to: user.email,
+//         subject: "Your Bunny Hop Shop Order Confirmation",
+//         html: orderEmailTemplate(order)
+//       });
+//       console.log(order)
+// await sendEmail({
+//   to: adminEmail,
+//   subject: "New Order Received",
+//   html: `<h2>New Order Alert</h2>
+//          <p>Order ID: ${order._id}</p>
+//          <p>Customer: ${order.fullName}</p>
+//          <p>Total: PKR.${order.totalPrice}</p>
+//          <p>Items: ${order.items.map(i => i.productId.title + " x" + i.quantity).join(", ")}</p>
+//          <p>
+//            <a href="${process.env.FRONTEND_URL}/order/${order._id}" 
+//               style="display:inline-block;padding:10px 15px;background:#007bff;color:#fff;text-decoration:none;border-radius:5px;">
+//               View Order Receipt
+//            </a>
+//          </p>
+//          <p>
+//            Or see all orders here: 
+//            <a href="${process.env.FRONTEND_URL}/orders/all">Orders Dashboard</a>
+//          </p>`
+// });
 
 
-      req.session.checkoutDone = "true";
-      return res.redirect(`/order/${order._id}`);
-    }
+//       req.session.checkoutDone = "true";
+//       return res.redirect(`/order/${order._id}`);
+//     }
 
-    let orderItems = user.cart.map(i => ({
-      productId: i.productId,
-      quantity: i.quantity
-    }));
+//     let orderItems = user.cart.map(i => ({
+//       productId: i.productId,
+//       quantity: i.quantity
+//     }));
 
-    let order = await orderModel.create({
-      fullName,
-      email,
-      phoneNumber,
-      shippingAddress: { street, city, state, zip },
-      items: orderItems,
-      totalPrice: Number(totalPrice),
-      status: "confirmed",
-      userId: req.user.userId
-    });
+//     let order = await orderModel.create({
+//       fullName,
+//       email,
+//       phoneNumber,
+//       shippingAddress: { street, city, state, zip },
+//       items: orderItems,
+//       totalPrice: Number(totalPrice),
+//       status: "confirmed",
+//       userId: req.user.userId
+//     });
 
-    await order.populate({ path: "items.productId" });
+//     await order.populate({ path: "items.productId" });
 
-    user.orders.push(order);
-    user.cart = [];
-    await user.save();
+//     user.orders.push(order);
+//     user.cart = [];
+//     await user.save();
 
-    await sendEmail({
-      to: user.email,
-      subject: "Your Bunny Hop Shop Order Confirmation",
-      html: orderEmailTemplate(order)
-    });
+//     await sendEmail({
+//       to: user.email,
+//       subject: "Your Bunny Hop Shop Order Confirmation",
+//       html: orderEmailTemplate(order)
+//     });
 
-await sendEmail({
-  to: adminEmail,
-  subject: "New Order Received",
-  html: `<h2>New Order Alert</h2>
-         <p>Order ID: ${order._id}</p>
-         <p>Customer: ${order.fullName}</p>
-         <p>Total: PKR.${order.totalPrice}</p>
-         <p>Items: ${order.items.map(i => i.productId.title + " x" + i.quantity).join(", ")}</p>
-         <p>
-           <a href="${process.env.FRONTEND_URL}/order/${order._id}" 
-              style="display:inline-block;padding:10px 15px;background:#007bff;color:#fff;text-decoration:none;border-radius:5px;">
-              View Order Receipt
-           </a>
-         </p>
-         <p>
-           Or see all orders here: 
-           <a href="${process.env.FRONTEND_URL}/orders/all">Orders Dashboard</a>
-         </p>`
-});
+// await sendEmail({
+//   to: adminEmail,
+//   subject: "New Order Received",
+//   html: `<h2>New Order Alert</h2>
+//          <p>Order ID: ${order._id}</p>
+//          <p>Customer: ${order.fullName}</p>
+//          <p>Total: PKR.${order.totalPrice}</p>
+//          <p>Items: ${order.items.map(i => i.productId.title + " x" + i.quantity).join(", ")}</p>
+//          <p>
+//            <a href="${process.env.FRONTEND_URL}/order/${order._id}" 
+//               style="display:inline-block;padding:10px 15px;background:#007bff;color:#fff;text-decoration:none;border-radius:5px;">
+//               View Order Receipt
+//            </a>
+//          </p>
+//          <p>
+//            Or see all orders here: 
+//            <a href="${process.env.FRONTEND_URL}/orders/all">Orders Dashboard</a>
+//          </p>`
+// });
 
-    req.session.checkoutDone = "true";
-    return res.redirect(`/order/${order._id}`);
+//     req.session.checkoutDone = "true";
+//     return res.redirect(`/order/${order._id}`);
 
-  } catch (error) {
-    console.log(error);
-    req.flash("error", "Error in Checkout");
-    res.status(500).send("Checkout failed");
-  }
-});
+//   } catch (error) {
+//     console.log(error);
+//     req.flash("error", "Error in Checkout");
+//     res.status(500).send("Checkout failed");
+//   }
+// });
 
 // router.get('/success-checkout', isLoggedIn, async (req, res) => {
 
@@ -1253,6 +1253,146 @@ await sendEmail({
 //     res.status(500).send("Checkout failed");
 //   }
 // });
+
+router.post('/checkout', isLoggedIn, async (req, res) => {
+  try {
+    let {
+      fullName,
+      lastName,
+      street,
+      city,
+      state,
+      zip,
+      phoneNumber,
+      email,
+      single,
+      productId,
+      quantity
+    } = req.body;
+
+    const isGuest = req.user === "unsigned";
+    const adminEmail = process.env.ADMIN_EMAIL;
+
+    let orderItems = [];
+
+    if (isGuest) {
+      // Guest user
+      if (single === "true") {
+        const product = await productModel.findById(productId);
+        const discount = await getDiscountForProduct(productId);
+
+        orderItems.push({
+          productId,
+          quantity: quantity || 1,
+          finalPrice: discount.finalPrice
+        });
+      } else {
+        let guestCart = [];
+        try {
+          guestCart = JSON.parse(req.cookies.guestCart || "[]");
+        } catch (e) {
+          guestCart = [];
+        }
+
+        // Calculate discounted prices for all items
+        orderItems = await Promise.all(guestCart.map(async item => {
+          const discount = await getDiscountForProduct(item.productId);
+          return {
+            productId: item.productId,
+            quantity: item.quantity,
+            finalPrice: discount.finalPrice
+          };
+        }));
+      }
+    } else {
+      // Logged-in user
+      if (single === "true") {
+        const product = await productModel.findById(productId);
+        const discount = await getDiscountForProduct(productId);
+
+        orderItems.push({
+          productId,
+          quantity: quantity || 1,
+          finalPrice: discount.finalPrice
+        });
+      } else {
+        const user = await userModel.findOne({ username: req.user.username });
+        orderItems = await Promise.all(user.cart.map(async i => {
+          const discount = await getDiscountForProduct(i.productId);
+          return {
+            productId: i.productId,
+            quantity: i.quantity,
+            finalPrice: discount.finalPrice
+          };
+        }));
+
+        // Clear user cart
+        user.cart = [];
+        await user.save();
+      }
+    }
+
+    // Calculate totalPrice with discounts
+    const totalPrice = orderItems.reduce((sum, item) => {
+      return sum + item.finalPrice * item.quantity;
+    }, 0);
+
+    // Create order
+    const orderData = {
+      fullName,
+      lastName,
+      phoneNumber,
+      email,
+      shippingAddress: { street, city, state, zip },
+      items: orderItems,
+      totalPrice,
+      status: "confirmed",
+      userId: isGuest ? null : req.user.userId,
+      isGuest
+    };
+
+    const order = await orderModel.create(orderData);
+    await order.populate({ path: "items.productId" });
+
+    // Send confirmation emails
+    await sendEmail({
+      to: email,
+      subject: "Your Bunny Hop Shop Order Confirmation",
+      html: orderEmailTemplate(order)
+    });
+
+    await sendEmail({
+      to: adminEmail,
+      subject: "New Order Received",
+      html: `<h2>New Order Alert</h2>
+             <p>Order ID: ${order._id}</p>
+             <p>Customer: ${order.fullName}</p>
+             <p>Total: PKR.${order.totalPrice}</p>
+             <p>Items: ${order.items.map(i => i.productId.title + " x" + i.quantity).join(", ")}</p>
+             <p>
+               <a href="${process.env.FRONTEND_URL}/order/${order._id}" 
+                  style="display:inline-block;padding:10px 15px;background:#007bff;color:#fff;text-decoration:none;border-radius:5px;">
+                  View Order Receipt
+               </a>
+             </p>
+             <p>
+               Or see all orders here: 
+               <a href="${process.env.FRONTEND_URL}/orders/all">Orders Dashboard</a>
+             </p>`
+    });
+
+    if (isGuest) res.clearCookie("guestCart");
+
+    req.session.checkoutDone = "true";
+    return res.redirect(`/order/${order._id}`);
+
+  } catch (error) {
+    console.log(error);
+    req.flash("error", "Error in Checkout");
+    res.status(500).send("Checkout failed");
+  }
+});
+
 
 
 router.get('/success-checkout', isLoggedIn, checkoutCheckout, async (req, res) => {

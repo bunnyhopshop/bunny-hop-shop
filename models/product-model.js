@@ -34,7 +34,11 @@ const prodModel = mongoose.Schema({
         type: String,
         enum: ['S', 'M', 'L', 'XL', 'XXL']
     },
-    discount: String,
+        discount: {
+        type: Number, // percentage or fixed amount
+        default: 0
+    },
+    finalPrice: { type: Number },
     gender: {
         type: String,
         enum: ['boy', 'girl', "unisex"],
