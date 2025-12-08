@@ -1,11 +1,11 @@
 const express = require('express')
 const app = express()
+require('dotenv').config();
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const port = process.env.PORT || 3000
 const indexRouter = require('./routes/index-router')
 const orderRouter = require('./routes/order-router')
-require('dotenv').config();
 const db = require('./config/mongoose.connection')
 const sellerRouter = require('./routes/seller-router')
 const flash = require('connect-flash')
@@ -17,20 +17,20 @@ app.get('/privacy-policy', (req, res) => {
 });
 
 app.get('/terms-of-service', (req, res) => {
-  res.render('terms-of-service', {user: null, cart: [], req});
+  res.render('terms-of-service', { user: null, cart: [], req });
 });
 app.get('/about', (req, res) => {
-  res.render('about', {user: null, cart: [], req});
+  res.render('about', { user: null, cart: [], req });
 });
 
 app.get('/shipping-delivery', (req, res) => {
-  res.render('shipping-delivery', {user: null, cart: [], req});
+  res.render('shipping-delivery', { user: null, cart: [], req });
 });
 app.get('/track-order', (req, res) => {
-  res.render('track-order', {user: null, cart: [], req});
+  res.render('track-order', { user: null, cart: [], req });
 });
 app.get('/return-exchange', (req, res) => {
-  res.render('return-exchange', {user: null, cart: [], req});
+  res.render('return-exchange', { user: null, cart: [], req });
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -58,6 +58,32 @@ app.use('/shipment', indexRouter);
 app.use('/orders', orderRouter)
 app.use('/seller', sellerRouter)
 app.use('/sales', salesRouter)
+
+// OAuth Setup
+const passport = require('./utils/oauth');
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function (req, res) {
+
+    const jwt = require('jsonwebtoken');
+    const token = jwt.sign(
+      { username: req.user.username, userId: req.user._id, isSeller: req.user.isSeller },
+      process.env.TOKEN
+    );
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 30 * 24 * 60 * 60 * 1000
+    });
+    res.redirect('/');
+  });
 
 app.listen(3000, () => {
   console.log(`Server listening on port ${port}`);
