@@ -266,7 +266,7 @@ router.post("/upload-hero", isLoggedInStrict, isSeller,uploadHero.single("hero")
   }
 );
 
-router.get('/testimonial', isLoggedIn, async (req, res) => {
+router.get('/testimonial', isLoggedIn, isSeller, async (req, res) => {
   try {
     let seller = await userModel.findOne({ username: req.user.username });
     let error = req.flash('error');
@@ -293,7 +293,7 @@ router.get('/testimonial', isLoggedIn, async (req, res) => {
   }
 });
 
-router.post('/testimonial', isLoggedIn, async (req, res) => {
+router.post('/testimonial', isLoggedIn, isSeller, async (req, res) => {
   try {
     const { username, message, instagramLink } = req.body;
 

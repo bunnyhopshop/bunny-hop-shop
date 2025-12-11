@@ -39,6 +39,58 @@
     }
   }
 </style>
+<style>
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.modal-box {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  width: 350px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-danger {
+  background: red;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+}
+
+.btn-secondary {
+  background: #777;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+</style>
+
 
 <main style="padding: var(--spacing-xl) 0; background-color: var(--color-bg-secondary); min-height: 100vh;">
     <div class="container">
@@ -68,12 +120,8 @@
               <div class="add-testimonial" style="width: 100%; padding: 0.8rem; margin-bottom: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;">
                 <h1><%= editingTestimonial ? "Edit Testimonial" : "Add Testimonial" %></h1>
                 <form action="<%= editingTestimonial ? '/seller/testimonial/edit/' + editingTestimonial._id : '/seller/testimonial' %>" method="POST">
-
                     <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Username:</label>
-                    <input type="text" name="username" value="<%= editingTestimonial ? editingTestimonial.username : '' %>" 
-                          style="width: 100%; padding: 0.8rem; margin-bottom: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;"
-                          required />
-
+                    <input type="text" name="username" value="<%= editingTestimonial ? editingTestimonial.username : '' %>"  style="width: 100%; padding: 0.8rem; margin-bottom: 0.5rem; border: 1px solid var(--color-border); border-radius: 4px;"required />
                     <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Instagram Link:</label>
                     <input type="text" name="instagramLink"
                           value="<%= editingTestimonial ? editingTestimonial.instagramLink : '' %>"
@@ -107,14 +155,27 @@
                           <a href="<%= t.instagramLink %>" target="_blank" class="insta">From Instagram</a>
                         <% } %>
                       </div>
-
                       <div>
                         <button class="btn btn-primary">
                           <a href="/seller/testimonial?edit=<%= t._id %>">Edit</a>
                         </button>
                         <form action="/seller/testimonial/delete/<%= t._id %>" method="POST" style="display:inline;">
-                          <button onclick="return confirm('Delete this testimonial?')" class="btn btn-primary">Delete</button>
+                         <button type="button" class="btn btn-primary" onclick="openDeleteModal('<%= t._id %>')">Delete</button>
+
+                          <!-- <button onclick="return confirm('Delete this testimonial?')" class="btn btn-primary">Delete</button> -->
                         </form>
+                        <div id="deleteModal" class="modal-overlay">
+                          <div class="modal-box">
+                            <h3>Delete Testimonial?</h3>
+                            <p>Are you sure you want to delete this testimonial?</p>
+
+                            <div class="modal-actions">
+                              <button type="button" class="btn btn-primary" onclick="closeDeleteModal()">Cancel</button>
+                              <button type="button" class="btn btn-primary" onclick="confirmDelete()">Delete</button>
+                            </div>
+                          </div>
+                        </div>
+                        <form id="deleteForm" method="POST"></form>
                       </div>
                     </div>
                   <% }) %>
@@ -126,4 +187,24 @@
         </div>
     </div>
 </main>
+  <script>
+  let deleteId = null;
+
+  function openDeleteModal(id) {
+    deleteId = id;
+    document.getElementById('deleteModal').style.display = 'flex';
+  }
+
+  function closeDeleteModal() {
+    deleteId = null;
+    document.getElementById('deleteModal').style.display = 'none';
+  }
+
+  function confirmDelete() {
+    const form = document.getElementById('deleteForm');
+    form.action = `/seller/testimonial/delete/${deleteId}`;
+    form.submit();
+  }
+  </script>
+
 
