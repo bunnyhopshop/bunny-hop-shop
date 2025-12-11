@@ -496,3 +496,31 @@ footer {
 .reveal-stagger.active>*:nth-child(4) {
     transition-delay: 0.4s;
 }
+
+  @media screen and (max-width: 488px) {
+    .logo { 
+    line-height: 25px;
+    font-family: var(--font-heading);
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--color-accent-primary);
+    text-shadow: 2px 2px 0px #FFC0CB;
+}
+    .text-accent{
+        margin-left: 50%;
+
+}
+    .signin{
+        display: flex !important;
+        font: 1rem !important;
+        padding: 13px 13px !important;
+    }
+  }
+    @media screen and (max-width: 400px) {
+     .signin{
+        display: flex !important;
+        font: 1rem !important;
+        padding: 8px 8px !important;
+    }
+}
+  

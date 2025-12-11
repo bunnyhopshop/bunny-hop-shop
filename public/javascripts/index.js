@@ -196,7 +196,8 @@ function scrollCard() {
 function addToCart() {
   const addBtn = document.querySelectorAll('.add-btn');
   const quantity = document.querySelector('.quantity');
-
+  quantity.classList.remove("none")
+  console.log(quantity)
   addBtn.forEach((btn) => {
     btn.addEventListener('click', async () => {
       const id = btn.getAttribute('data-fitId');
@@ -207,7 +208,7 @@ function addToCart() {
         btn.innerHTML = `<i class="ri-check-line"></i> Added to cart`;
         console.log(data.cart)
         quantity.textContent = data.cart.length;
-
+        quantity.style.display = "inline-block";
       } catch (error) {
         console.log(error);
       }
