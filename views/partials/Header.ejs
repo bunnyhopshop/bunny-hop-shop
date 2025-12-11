@@ -16,7 +16,7 @@
 
 <body>
 <% const totalItems = Array.isArray(cart) ? cart.length : 0; %>
-<% console.log("Total items:", totalItems, cart.length); %>
+
 
     <header>
       <div class="container">
@@ -28,7 +28,7 @@
           </button>
 
           <!-- Logo -->
-          <a href="/" class="logo">
+          <a aria-colspan="flex " href="/" class="logo">
             Bunny <span class="text-accent">Hop</span>
           </a>
 
@@ -59,17 +59,19 @@
             <!-- Cart -->
             <a href="/cart" style="position: relative;">
               <i class="ri-shopping-cart-line"></i>
-              <% if(totalItems> 0) { %>
-                <span class="quantity"
-                  style="position: absolute; top: -8px; right: -8px; background: var(--color-accent-primary); color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 50%;">
-                  <%= totalItems %>
-                </span>
-                <% } %>
+<span 
+  id="cartQuantity"
+  class="quantity"
+  style="position: absolute; top: -8px; right: -8px; background: var(--color-accent-primary); 
+         color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 50%;
+         display: <%= totalItems > 0 ? 'inline-block' : 'none' %>;">
+  <%= totalItems %>
+</span>
             </a>
 
             <!-- User Auth -->
             <% if (!user || user==='unsigned' ) { %>
-              <a href="/access" class="btn btn-primary" style="padding: 0.5rem 1.5rem; font-size: 0.9rem;">Sign In</a>
+              <a href="/access" class="btn btn-primary signin" style="padding: 0.5rem 1.5rem; font-size: 0.9rem;">Sign In</a>
               <% } else { %>
                 <div style="display: flex; align-items: center; gap: 10px;">
                   <span style="font-size: 0.9rem; font-weight: 500;">
