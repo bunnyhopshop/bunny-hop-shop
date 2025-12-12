@@ -81,12 +81,15 @@
 
   <script>
     let showPassword = {};
+
     function togglePassword(inputId, toggleId) {
-      showPassword[inputId] = !showPassword[inputId];
-      const input = document.getElementById(inputId);
-      const text = document.getElementById(toggleId);
-      input.type = showPassword[inputId] ? "text" : "password";
-      text.innerText = showPassword[inputId] ? "Hide" : "Show";
+        showPassword[inputId] = !showPassword[inputId];
+
+        const input = document.getElementById(inputId);
+        const text = document.getElementById(toggleId);
+
+        input.type = showPassword[inputId] ? "text" : "password";
+        text.innerText = showPassword[inputId] ? "hide" : "show";
     }
   </script>
 

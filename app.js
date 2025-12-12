@@ -11,6 +11,7 @@ const sellerRouter = require('./routes/seller-router')
 const flash = require('connect-flash')
 const expressSession = require('express-session')
 const salesRouter = require("./routes/sales-router")
+const paymentRoutes = require('./routes/paymentRoutes')
 
 app.get('/privacy-policy', (req, res) => {
   res.render('privacy-policy', { user: null, cart: [], req });
@@ -58,6 +59,7 @@ app.use('/shipment', indexRouter);
 app.use('/orders', orderRouter)
 app.use('/seller', sellerRouter)
 app.use('/sales', salesRouter)
+app.use('/api/payment', paymentRoutes);
 
 // OAuth Setup
 const passport = require('./utils/oauth');
@@ -65,12 +67,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] }));
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
 
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function (req, res) {
-
     const jwt = require('jsonwebtoken');
     const token = jwt.sign(
       { username: req.user.username, userId: req.user._id, isSeller: req.user.isSeller },
@@ -83,7 +85,17 @@ app.get('/auth/google/callback',
       maxAge: 30 * 24 * 60 * 60 * 1000
     });
     res.redirect('/');
-  });
+  }
+);
+
+app.post("/payment-success", (req, res) => {
+  console.log("JazzCash response:", req.body);
+  // In production: verify secure hash and update order in DB
+  if (req.body.pp_ResponseCode === "000") {
+    return res.send("<h2>Payment Successful</h2><p>Thank you for your payment.</p>");
+  }
+  return res.send("<h2>Payment Failed</h2><p>Check the response and logs.</p>");
+});  
 
 app.listen(3000, () => {
   console.log(`Server listening on port ${port}`);

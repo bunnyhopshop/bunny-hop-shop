@@ -77,6 +77,13 @@
                 <input type="checkbox" checked disabled style="width: 1.2rem; height: 1.2rem; margin-right: 0.8rem;">
                 <span style="font-weight: 500;">Cash on Delivery (COD)</span>
               </label>
+              <!-- <p>Amount (PKR):</p>
+
+              <input type="number" id="amount" value="1500" />
+
+              <br><br>
+
+            <button id="payBtn">Pay with JazzCash (Sandbox)</button> -->
             </div>
 
           </div>
@@ -176,5 +183,47 @@
       }
     }
   </style>
+  <script>
+    document.getElementById("payBtn").addEventListener("click", async () => {
+      const payBtn = document.getElementById("payBtn");
+      const amount = document.getElementById("amount").value;
+
+      payBtn.disabled = true;
+      payBtn.innerText = "Redirecting...";
+
+      try {
+        const res = await fetch("http://localhost:3000/api/payment/pay", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount })
+        });
+
+        const payload = await res.json();
+
+        // Create form for JazzCash
+        const form = document.createElement("form");
+        form.method = "POST";
+        form.action = payload.paymentURL;
+
+        // Add hidden fields
+        Object.entries(payload.data).forEach(([key, value]) => {
+          const input = document.createElement("input");
+          input.type = "hidden";
+          input.name = key;
+          input.value = value;
+          form.appendChild(input);
+        });
+
+        document.body.appendChild(form);
+        form.submit();
+
+      } catch (err) {
+        console.error(err);
+        alert("Failed to start payment");
+        payBtn.disabled = false;
+        payBtn.innerText = "Pay with JazzCash (Sandbox)";
+      }
+    });
+  </script>
 
   <%- include('./partials/Footer.ejs') %>

@@ -62,39 +62,41 @@
                     </a>
               </div>
 
-              <div style="flex-grow: 1;">
-                <h3 style="font-size: 1.1rem; font-family: var(--font-body); margin-bottom: 0.5rem;">
-                  <a href="/products/<%= fit._id %>">
-                    <%= fit.title %>
-                  </a>
-                </h3>
+              <div style="display: flex; flex-direction: column; padding: 0.8rem;">
+                <div style="flex-grow: 1; ">
+                  <h3 style="font-size: 1.1rem; font-family: var(--font-body); margin-bottom: 0.5rem;">
+                    <a href="/products/<%= fit._id %>">
+                      <%= fit.title %>
+                    </a>
+                  </h3>
 
-                <!-- Colors -->
-                <% if (fit.color && Array.isArray(fit.color)) { %>
-                  <div style="display: flex; gap: 4px; margin-bottom: 0.5rem;">
-                    <% fit.color.forEach(c=> { %>
-                      <span
-                        style="width: 12px; height: 12px; rounded-full; background-color: <%= c %>; display: inline-block; border-radius: 50%; border: 1px solid #ddd;"></span>
-                      <% }) %>
-                  </div>
-                  <% } %>
-
-                    <!-- Price -->
-                    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 1rem;">
-                      <% if (fit.discountInfo && fit.discountInfo.percent> 0) { %>
-                        <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">PKR <%= fit.price
-                            %></span>
-                        <span style="color: var(--color-accent-primary); font-weight: 600;">PKR <%=
-                            fit.discountInfo.finalPrice %></span>
-                        <% } else { %>
-                          <span style="font-weight: 600;">PKR <%= fit.price %></span>
-                          <% } %>
+                  <!-- Colors -->
+                  <% if (fit.color && Array.isArray(fit.color)) { %>
+                    <div style="display: flex; gap: 4px; margin-bottom: 0.5rem;">
+                      <% fit.color.forEach(c=> { %>
+                        <span
+                          style="width: 12px; height: 12px; rounded-full; background-color: <%= c %>; display: inline-block; border-radius: 50%; border: 1px solid #ddd;"></span>
+                        <% }) %>
                     </div>
-              </div>
+                    <% } %>
 
-              <button data-fitId="<%= fit._id%>" class="btn btn-primary add-btn" style="width: 100%;">
-                <i class="ri-shopping-cart-2-line" style="margin-right: 5px;"></i> Add to Cart
-              </button>
+                      <!-- Price -->
+                      <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 1rem;">
+                        <% if (fit.discountInfo && fit.discountInfo.percent> 0) { %>
+                          <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">PKR <%= fit.price
+                              %></span>
+                          <span style="color: var(--color-accent-primary); font-weight: 600;">PKR <%=
+                              fit.discountInfo.finalPrice %></span>
+                          <% } else { %>
+                            <span style="font-weight: 600;">PKR <%= fit.price %></span>
+                            <% } %>
+                      </div>
+                </div>
+
+                <button data-fitId="<%= fit._id%>" class="btn btn-primary add-btn" style="width: 100%;">
+                  <i class="ri-shopping-cart-2-line" style="margin-right: 5px;"></i> Add to Cart
+                </button>
+              </div>
             </div>
             <% }) %>
         </div>
