@@ -74,7 +74,7 @@
 
             <!-- User Auth -->
             <% if (!user || user==='unsigned' ) { %>
-              <a href="/access" class="btn btn-primary signin" style="padding: 0.5rem 1.5rem; font-size: 0.9rem;">Sign In</a>
+              <a href="/access" class="btn btn-primary signin acc" style="padding: 0.5rem 1.5rem; font-size: 0.9rem;">Sign In</a>
               <% } else { %>
               <div class="relative flex ">
                 <!-- Username button -->
@@ -90,7 +90,7 @@
                 <% } %>
 
                 <!-- Logout dropdown -->
-                  <a href="/logout" class="block p-2 logoutbtn text-red-600 text-sm hover:bg-gray-100 rounded-md">Logout</a>
+                  <a href="/logout" class="block p-2 acc text-red-600 text-sm hover:bg-gray-100 rounded-md">Logout</a>
               </div>
             <% } %>
           </div>
@@ -134,7 +134,7 @@
         }
       }
       @media (max-width: 768px) {
-        .logoutbtn {
+        .acc {
           display: none !important;
         }
       }
