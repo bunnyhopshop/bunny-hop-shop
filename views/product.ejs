@@ -74,7 +74,7 @@
         </div>
 
         <!-- Actions -->
-        <div style="display: flex; gap: 1rem; margin-bottom: 2.5rem;">
+        <div style="display: flex; gap: 1rem; margin-bottom: 2.5rem;" class="action">
           <button onclick="window.location.href='/checkout/<%= product.id %>'" class="btn btn-primary"
             style="flex: 2; font-size: 1.1rem;">
             Buy Now
@@ -167,6 +167,11 @@ addBtns.forEach(btn => {
 
         h1 {
           font-size: 2rem !important;
+        }
+      }
+      @media (max-width: 425px) {
+        .action {
+          flex-direction: column;
         }
       }
     </style>
