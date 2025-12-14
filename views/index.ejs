@@ -5,6 +5,7 @@
       .hero-container {
         display: flex !important;
         flex-direction: column !important;
+        gap: 2rem !important;
       }
       .img {
         width: 300px !important;
@@ -20,7 +21,7 @@
     <!-- Hero Section (Existing) -->
     <div class="hero-section"
       style="padding: 4rem 0; background: radial-gradient(circle at 10% 20%, rgb(255, 240, 245) 0%, rgb(255, 255, 255) 90%); overflow: hidden;">
-      <div class="container hero-container" style="display: flex; flex-direction: row; gap: 2rem; align-items: center;">
+      <div class="container hero-container" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
         <div class="reveal">
           <span
             style="background: var(--color-secondary-accent); color: var(--color-text-primary); padding: 0.5rem 1rem; border-radius: 20px; font-weight: 600; font-size: 0.9rem; margin-bottom: 1rem; display: inline-block;">New
@@ -38,7 +39,7 @@
         </div>
         <div class="lg-hidden reveal" style="position: relative;">
           <div class="animate-float float-div"
-            style="width: 100%; height: 500px; background-color: #ffe4e1; border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 8px solid white; box-shadow: var(--shadow-lg);">
+            style="width: 100%; height: 500px; background-color: #ffe4e1; margin-left:auto; border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 8px solid white; box-shadow: var(--shadow-lg);">
             <% if(typeof essentials !=='undefined' && essentials && essentials.heroImage) { %>
                             <img src="<%= essentials.heroImage %>" alt="Happy Baby" class="img" style="width: 100%; height: 100%; object-fit: cover;"
               onerror="this.src='https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=800&auto=format&fit=crop'">
