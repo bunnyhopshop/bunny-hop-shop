@@ -41,9 +41,19 @@
                                                 </p>
                                             </div>
                                             <div style="text-align: right;">
-                                                <span
-                                                    style="font-weight: 600; font-size: 1.1rem; color: var(--color-accent-primary);">PKR
-                                                    <%= order.totalPrice %></span>
+                                                <span style="font-weight: 600; font-size: 1.1rem; color: var(--color-accent-primary);">PKR
+                                                    <%= order.totalPrice %>
+                                                </span>
+                                                <div style="font-size: 0.7rem;">
+                                                    <span>Shipping</span>
+                                                    <span>250.00</span>
+                                                </div>
+                                                <div style="display: flex; flex-direction: column; font-size: 1.1rem; font-weight: 600;">
+                                                    <span>Total</span>
+                                                    <span style="color: var(--color-accent-primary);">
+                                                        PKR <%= order.totalPrice + 250 %>
+                                                    </span>
+                                                </div>
                                                 <div style="margin-top: 5px;">
                                                     <span
                                                         style="padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; background: #e0f2fe; color: #0369a1; text-transform: capitalize;">
@@ -92,7 +102,7 @@
 
                                         <div style="text-align: right;">
                                             <button class="btn btn-primary cancel-btn" data-id="<%= order._id %>"
-                                                style="background: #dc2626; border-color: #dc2626; font-size: 0.9rem; padding: 0.5rem 1rem;">Cancel
+                                                style="font-size: 0.9rem; padding: 0.5rem 1rem;">Cancel
                                                 Order</button>
                                         </div>
                                     </div>

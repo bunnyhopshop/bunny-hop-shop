@@ -54,7 +54,7 @@
                       <a href="/seller/edit/<%= fit._id %>" class="btn btn-outline"
                         style="flex: 1; padding: 0.4rem; font-size: 0.8rem; text-align: center;">Edit</a>
                       <button data-id="<%= fit._id %>" class="btn btn-primary prod-delete"
-                        style="flex: 1; padding: 0.4rem; font-size: 0.8rem; background: #dc2626; border-color: #dc2626;">Delete</button>
+                        style="flex: 1; padding: 0.4rem; font-size: 0.8rem;">Delete</button>
                     </div>
                   </div>
 
@@ -90,7 +90,7 @@
       <div style="display: flex; justify-content: flex-end; gap: 1rem;">
         <button id="cancelDelete" class="btn btn-outline" style="padding: 0.5rem 1rem;">Cancel</button>
         <button id="confirmDelete" class="btn btn-primary"
-          style="background: #dc2626; border-color: #dc2626; padding: 0.5rem 1rem;">Yes, Delete</button>
+          style="padding: 0.5rem 1rem;">Yes, Delete</button>
       </div>
     </div>
   </div>
@@ -99,34 +99,38 @@
 
     <script>
       document.addEventListener('DOMContentLoaded', () => {
+      
+        // ===== DELETE PRODUCT =====
         const deleteButtons = document.querySelectorAll('.prod-delete');
         const modal = document.getElementById('confirmModal');
         const cancelBtn = document.getElementById('cancelDelete');
         const confirmBtn = document.getElementById('confirmDelete');
         let pendingDelete = { id: null, card: null };
-
+      
         deleteButtons.forEach(btn => {
-          btn.addEventListener('click', (e) => {
+          btn.addEventListener('click', () => {
             const id = btn.dataset.id;
             const card = btn.closest('.product-card-admin');
             pendingDelete = { id, card };
             modal.style.display = 'flex';
           });
         });
-
+      
         cancelBtn.addEventListener('click', () => {
           modal.style.display = 'none';
           pendingDelete = { id: null, card: null };
         });
-
+      
         confirmBtn.addEventListener('click', async () => {
           if (!pendingDelete.id) return;
+      
           try {
             const res = await fetch(`/seller/products/${pendingDelete.id}`, {
-              method: 'DELETE',
-              headers: { 'Content-Type': 'application/json' }
+              method: 'DELETE'
             });
+      
             if (!res.ok) throw new Error('Delete failed');
+      
             if (pendingDelete.card) pendingDelete.card.remove();
           } catch (err) {
             alert('Error deleting product');
@@ -135,40 +139,43 @@
             pendingDelete = { id: null, card: null };
           }
         });
-      });
-
-      // Pin Feature Logic
-      const featureButtons = document.querySelectorAll('.prod-feature');
-      featureButtons.forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-          const id = btn.dataset.id;
-          try {
-            const res = await fetch(`/seller/feature/${id}`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' }
-            });
-            const data = await res.json();
-
-            if (data.success) {
-              if (data.isFeatured) {
-                btn.style.background = '#FFD700';
-                btn.style.color = 'white';
-                btn.innerHTML = '<i class="ri-star-fill"></i> Pinned';
-              } else {
-                btn.style.background = 'transparent';
-                btn.style.color = '#DAA520';
-                btn.innerHTML = '<i class="ri-star-line"></i> Pin';
+      
+      
+        // ===== FEATURE / PIN PRODUCT =====
+        const featureButtons = document.querySelectorAll('.prod-feature');
+      
+        featureButtons.forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const id = btn.dataset.id;
+      
+            try {
+              const res = await fetch(`/seller/feature/${id}`, {
+                method: 'POST'
+              });
+      
+              const data = await res.json();
+      
+              if (data.success) {
+                if (data.isFeatured) {
+                  btn.style.background = '#FFD700';
+                  btn.style.color = 'white';
+                  btn.innerHTML = '<i class="ri-star-fill"></i> Pinned';
+                } else {
+                  btn.style.background = 'transparent';
+                  btn.style.color = '#DAA520';
+                  btn.innerHTML = '<i class="ri-star-line"></i> Pin';
+                }
               }
+            } catch (err) {
+              console.error(err);
+              alert('Error updating status');
             }
-          } catch (err) {
-            console.error(err);
-            alert('Error updating status');
-          }
+          });
         });
-      });
-
+      
       });
     </script>
+      
 
     <style>
       @media(max-width: 768px) {
