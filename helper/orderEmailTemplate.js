@@ -21,7 +21,8 @@ function orderEmailTemplate(order) {
             ${itemsHTML}
         </table>
 
-        <p style="margin-top:20px;"><strong>Total Price:</strong> PKR.${order.totalPrice}</p>
+        <p style="margin-top:20px;">PKR.${order.totalPrice}</p>
+        <p style="margin-top:20px;"><strong>Total Price with shipping:</strong> PKR.${order.totalPrice + 250}</p>
         <p><strong>Order ID:</strong> ${order._id}</p>
 
         <br>

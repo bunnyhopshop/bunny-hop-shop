@@ -1388,7 +1388,8 @@ router.post('/checkout', isLoggedIn, async (req, res) => {
       html: `<h2>New Order Alert</h2>
              <p>Order ID: ${order._id}</p>
              <p>Customer: ${order.fullName}</p>
-             <p>Total: PKR.${order.totalPrice}</p>
+             <p>PKR.${order.totalPrice}</p>
+             <p>Total: PKR.${order.totalPrice + 250}</p>
              <p>Items: ${order.items.map(i => i.productId.title + " x" + i.quantity).join(", ")}</p>
              <p>
                <a href="${process.env.FRONTEND_URL}/order/${order._id}" 
